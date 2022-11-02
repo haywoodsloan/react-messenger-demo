@@ -1,0 +1,6 @@
+# Ignore stylesheets
+**/*.css
+**/*.scss
+
+# Ignore graphics
+**/*.svg
