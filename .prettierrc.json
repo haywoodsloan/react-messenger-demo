@@ -1,4 +1,9 @@
 {
     "singleQuote": true,
-    "endOfLine": "auto"
+    "endOfLine": "auto",
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
+    "importOrder": [
+        "^[./]"
+    ]
 }

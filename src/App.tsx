@@ -1,6 +1,7 @@
-import { Routes, Route } from 'react-router-dom';
-import Messenger from 'components/messenger/Messenger';
+import { Route, Routes } from 'react-router-dom';
+
 import './App.scss';
+import Messenger from './components/messenger/Messenger';
 
 function App() {
   return (
