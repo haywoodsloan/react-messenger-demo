@@ -5,7 +5,7 @@
     "*.{css,scss}": [
         "stylelint --fix"
     ],
-    "*.{html}": [
+    "*.html": [
         "prettier --write"
     ]
 }
