@@ -4,6 +4,7 @@
     "importOrderSeparation": true,
     "importOrderSortSpecifiers": true,
     "importOrder": [
+        "^src/(.*)$",
         "^[./]"
     ]
 }

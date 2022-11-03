@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import './App.scss';
 import Messenger from './components/messenger/Messenger';
 
-function App() {
+export default function App () {
   return (
     <div className="App">
       <Routes>
@@ -12,5 +12,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
