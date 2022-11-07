@@ -1,19 +1,20 @@
 @use 'sass:map';
 @use './styles/variables' as *;
 
-body,
-html {
-  // base layout
-  height: 100%;
-  margin: 0;
-}
-
-html {
+:root {
   // root font size to use rem units elsewhere
   font-size: 10px;
+
+  // dynamic color vars, for future color themes
+  @each $name, $value in $color {
+    --#{$name}: #{$value};
+  }
 }
 
 body {
+  // base layout
+  margin: 0;
+
   // base font
   font-family: Arial, Helvetica, sans-serif;
   font-size: map.get($fontSize, 'regular');
@@ -22,11 +23,4 @@ body {
   // browser specific font optimizations
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-:root {
-  // dynamic color vars, for future color themes
-  @each $name, $value in $color {
-    --#{$name}: #{$value};
-  }
 }

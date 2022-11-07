@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  height: 10rem;
+  align-items: center;
+}
+
+.avatar {
+  flex: 0 0 5rem;
+}
+
+.preview {
+  flex: 1 1 auto;
+}

@@ -1,11 +1,14 @@
 import { Route, Routes } from 'react-router-dom';
 
-import Messenger from './components/messenger/Messenger';
+import style from './App.module.scss';
+import Messenger from './components/messenger';
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Messenger />} />
-    </Routes>
+    <div className={style.container}>
+      <Routes>
+        <Route path="/" element={<Messenger />} />
+      </Routes>
+    </div>
   );
 }
