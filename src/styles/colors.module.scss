@@ -1,6 +1,10 @@
 @use 'sass:map';
 @use './variables' as *;
 
+/* 
+ * Use CSS variables here to support changing color themes during runtime
+ */
+
 .textPrimary {
   color: var(--textPrimary);
 }
