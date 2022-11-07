@@ -1,0 +1,42 @@
+@use 'sass:map';
+@use './variables' as *;
+
+.styleLight {
+  font-style: normal;
+  font-weight: map.get($fontWeight, 'light');
+}
+
+.styleRegular {
+  font-style: normal;
+  font-weight: map.get($fontWeight, 'normal');
+}
+
+.styleSemiBold {
+  font-style: normal;
+  font-weight: map.get($fontWeight, 'semiBold');
+}
+
+.styleBold {
+  font-style: normal;
+  font-weight: map.get($fontWeight, 'bold');
+}
+
+.sizeExtraSmall {
+  font-size: map.get($fontSize, 'extraSmall');
+}
+
+.sizeSmall {
+  font-size: map.get($fontSize, 'small');
+}
+
+.sizeRegular {
+  font-size: map.get($fontSize, 'regular');
+}
+
+.sizeLarge {
+  font-size: map.get($fontSize, 'large');
+}
+
+.sizeExtraLarge {
+  font-size: map.get($fontSize, 'extraLarge');
+}

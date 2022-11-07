@@ -1,0 +1,14 @@
+@use 'sass:map';
+@use './variables' as *;
+
+.textPrimary {
+  color: var(--textPrimary);
+}
+
+.fillPrimary {
+  background-color: var(--fillPrimary);
+}
+
+.borderPrimary {
+  border-color: var(--borderPrimary);
+}

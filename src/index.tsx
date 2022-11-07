@@ -29,7 +29,7 @@ root.render(
 
 function sendAnalytics(metric: Metric) {
   // Eventually this should send the data to an analytics service
-  // like App Insights for now just log to the console
+  // like App Insights, for now just log to the console
   console.log(metric);
 }
 

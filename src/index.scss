@@ -1,7 +1,32 @@
-body {
+@use 'sass:map';
+@use './styles/variables' as *;
+
+body,
+html {
+  // base layout
+  height: 100%;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+html {
+  // root font size to use rem units elsewhere
+  font-size: 10px;
+}
+
+body {
+  // base font
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: map.get($fontSize, 'regular');
+  font-weight: map.get($fontWeight, 'normal');
+
+  // browser specific font optimizations
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  // dynamic color vars, for future color themes
+  @each $name, $value in $color {
+    --#{$name}: #{$value};
+  }
 }
