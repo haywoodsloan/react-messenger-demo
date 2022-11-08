@@ -1,32 +1,19 @@
-@use 'sass:map';
 @use './variables' as *;
 
-.styleRegular {
-  font-weight: map.get($fontWeight, 'normal');
-  font-style: normal;
+@each $name, $value in $fontWeight {
+  .#{$name}Style {
+    font-weight: #{$value};
+    font-style: normal;
+  }
+
+  .#{$name}ItalicStyle {
+    font-weight: #{$value};
+    font-style: italic;
+  }
 }
 
-.styleBold {
-  font-weight: map.get($fontWeight, 'bold');
-  font-style: normal;
-}
-
-.sizeExtraSmall {
-  font-size: map.get($fontSize, 'extraSmall');
-}
-
-.sizeSmall {
-  font-size: map.get($fontSize, 'small');
-}
-
-.sizeRegular {
-  font-size: map.get($fontSize, 'regular');
-}
-
-.sizeLarge {
-  font-size: map.get($fontSize, 'large');
-}
-
-.sizeExtraLarge {
-  font-size: map.get($fontSize, 'extraLarge');
+@each $name, $value in $fontSize {
+  .#{$name}Size {
+    font-size: #{$value};
+  }
 }

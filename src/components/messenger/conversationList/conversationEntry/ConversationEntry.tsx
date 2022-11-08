@@ -23,13 +23,13 @@ export default function ConversationEntry() {
         <div
           className={classNames(
             layout.smallMarginBottom,
-            fonts.styleBold,
+            fonts.semiBoldStyle,
             colors.textPrimary
           )}
         >
           Top Text
         </div>
-        <div className={classNames(colors.textPrimary)}>Bottom Text</div>
+        <div className={colors.textSecondary}>Bottom Text</div>
       </div>
     </div>
   );

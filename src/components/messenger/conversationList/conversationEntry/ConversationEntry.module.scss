@@ -2,10 +2,9 @@
   display: flex;
   align-items: center;
   height: 10rem;
-  border-bottom: 0.2rem solid var(--borderPrimary);
 
-  & + &:last-child {
-    border-bottom: none;
+  &:not(:last-child) {
+    border-bottom: 0.2rem solid var(--borderPrimary);
   }
 }
 

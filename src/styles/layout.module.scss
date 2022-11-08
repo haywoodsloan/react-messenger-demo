@@ -1,4 +1,3 @@
-@use 'sass:map';
 @use './variables' as *;
 
 @each $name, $value in $spacing {

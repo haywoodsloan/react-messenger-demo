@@ -1,6 +1,8 @@
 // color
 $color: (
   'textPrimary': white,
+  'textSecondary': lightgrey,
+  'textTertiary': darkslategrey,
   'fillPrimary': dimgrey,
   'fillSecondary': lightgrey,
   'borderPrimary': darkgrey,
@@ -8,13 +10,16 @@ $color: (
 
 // font
 $fontWeight: (
+  'light': 300,
   'normal': 400,
+  'semiBold': 600,
   'bold': 700,
+  'extraBold': 800,
 );
 $fontSize: (
   'extraSmall': 1rem,
   'small': 1.5rem,
-  'regular': 2rem,
+  'medium': 2rem,
   'large': 2.5rem,
   'extraLarge': 3rem,
 );

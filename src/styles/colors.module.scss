@@ -1,15 +1,20 @@
+@use 'sass:string';
+@use './variables' as *;
+
 /* 
  * Use CSS variables here to support changing color themes during runtime
  */
 
-.textPrimary {
-  color: var(--textPrimary);
-}
+@each $name, $value in $color {
+  @if string.index($name, 'text') == 1 {
+    .#{$name} {
+      color: var(--#{$name});
+    }
+  }
 
-.fillPrimary {
-  background-color: var(--fillPrimary);
-}
-
-.fillSecondary {
-  background-color: var(--fillSecondary);
+  @if string.index($name, 'fill') == 1 {
+    .#{$name} {
+      background-color: var(--#{$name});
+    }
+  }
 }
