@@ -1,6 +1,3 @@
-@use 'sass:map';
-@use './variables' as *;
-
 /* 
  * Use CSS variables here to support changing color themes during runtime
  */
@@ -13,6 +10,6 @@
   background-color: var(--fillPrimary);
 }
 
-.borderPrimary {
-  border-color: var(--borderPrimary);
+.fillSecondary {
+  background-color: var(--fillSecondary);
 }

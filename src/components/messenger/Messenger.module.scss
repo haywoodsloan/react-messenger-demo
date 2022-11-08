@@ -5,8 +5,9 @@
 
 .convoList {
   flex: 0 0 15%;
+  border-right: 0.2rem solid var(--borderPrimary);
 }
 
 .convoView {
-  flex: 0 0 85%;
+  flex: 1 1 auto;
 }

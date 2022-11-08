@@ -16,9 +16,12 @@ body {
   margin: 0;
 
   // base font
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: map.get($fontSize, 'regular');
   font-weight: map.get($fontWeight, 'normal');
+  font-size: map.get($fontSize, 'regular');
+  font-family: Arial, Helvetica, sans-serif;
+
+  // color
+  background-color: var(--fillPrimary);
 
   // browser specific font optimizations
   -webkit-font-smoothing: antialiased;

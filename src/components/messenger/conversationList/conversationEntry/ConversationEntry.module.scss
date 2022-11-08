@@ -1,11 +1,16 @@
 .container {
   display: flex;
-  height: 10rem;
   align-items: center;
+  height: 10rem;
+  border-bottom: 0.2rem solid var(--borderPrimary);
+
+  & + &:last-child {
+    border-bottom: none;
+  }
 }
 
 .avatar {
-  flex: 0 0 5rem;
+  flex: 0 0 auto;
 }
 
 .preview {

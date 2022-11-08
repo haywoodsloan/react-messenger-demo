@@ -1,0 +1,42 @@
+@use 'sass:map';
+@use './variables' as *;
+
+@each $name, $value in $spacing {
+  .#{$name} {
+    &Margin {
+      &Left {
+        margin-left: #{$value};
+      }
+
+      &Right {
+        margin-right: #{$value};
+      }
+
+      &Top {
+        margin-top: #{$value};
+      }
+
+      &Bottom {
+        margin-bottom: #{$value};
+      }
+    }
+
+    &Padding {
+      &Left {
+        padding-left: #{$value};
+      }
+
+      &Right {
+        padding-right: #{$value};
+      }
+
+      &Top {
+        padding-top: #{$value};
+      }
+
+      &Bottom {
+        padding-bottom: #{$value};
+      }
+    }
+  }
+}

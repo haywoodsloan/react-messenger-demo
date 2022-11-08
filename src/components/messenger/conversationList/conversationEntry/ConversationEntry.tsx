@@ -1,12 +1,35 @@
+import classNames from 'classnames';
+
+import Avatar from 'src/components/core/avatar';
+import colors from 'src/styles/colors.module.scss';
+import fonts from 'src/styles/fonts.module.scss';
+import layout from 'src/styles/layout.module.scss';
+
 import styles from './ConversationEntry.module.scss';
 
 export default function ConversationEntry() {
   return (
     <div className={styles.container}>
-      <div className={styles.avatar}>X</div>
+      <div
+        className={classNames(
+          styles.avatar,
+          layout.extraLargeMarginRight,
+          layout.mediumMarginLeft
+        )}
+      >
+        <Avatar />
+      </div>
       <div className={styles.preview}>
-        <div>Top Text</div>
-        <div>Bottom Text</div>
+        <div
+          className={classNames(
+            layout.smallMarginBottom,
+            fonts.styleBold,
+            colors.textPrimary
+          )}
+        >
+          Top Text
+        </div>
+        <div className={classNames(colors.textPrimary)}>Bottom Text</div>
       </div>
     </div>
   );

@@ -1,15 +1,14 @@
 // color
 $color: (
   'textPrimary': white,
-  'fillPrimary': grey,
-  'borderPrimary': darkorange,
+  'fillPrimary': dimgrey,
+  'fillSecondary': lightgrey,
+  'borderPrimary': darkgrey,
 );
 
 // font
 $fontWeight: (
-  'light': 300,
   'normal': 400,
-  'semiBold': 600,
   'bold': 700,
 );
 $fontSize: (
@@ -18,4 +17,12 @@ $fontSize: (
   'regular': 2rem,
   'large': 2.5rem,
   'extraLarge': 3rem,
+);
+
+// spacing
+$spacing: (
+  'small': 0.4rem,
+  'medium': 0.8rem,
+  'large': 1.2rem,
+  'extraLarge': 2rem,
 );

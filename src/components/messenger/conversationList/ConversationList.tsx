@@ -5,6 +5,8 @@ export default function ConversationList() {
   return (
     <div className={styles.container}>
       <ConversationEntry />
+      <ConversationEntry />
+      <ConversationEntry />
     </div>
   );
 }

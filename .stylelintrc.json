@@ -2,7 +2,8 @@
     "extends": [
         "stylelint-config-standard-scss",
         "stylelint-config-css-modules",
-        "stylelint-prettier/recommended"
+        "stylelint-prettier/recommended",
+        "stylelint-config-rational-order"
     ],
     "rules": {
         "selector-class-pattern": "^[a-z][a-zA-Z0-9]+$",
