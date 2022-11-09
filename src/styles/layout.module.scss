@@ -39,3 +39,13 @@
     }
   }
 }
+
+.truncateText {
+  overflow: hidden;
+  white-space: nowrap;
+
+  &Ellipsis {
+    composes: truncateText;
+    text-overflow: ellipsis;
+  }
+}

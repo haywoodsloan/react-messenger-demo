@@ -1,10 +1,22 @@
+.divLike {
+  all: unset;
+  width: 100%;
+}
+
 .container {
   display: flex;
   align-items: center;
   height: 10rem;
+  cursor: pointer;
+  transition: background-color 250ms;
 
   &:not(:last-child) {
     border-bottom: 0.2rem solid var(--borderPrimary);
+  }
+
+  &:hover,
+  &:focus {
+    background-color: var(--fillTertiary);
   }
 }
 
@@ -12,6 +24,20 @@
   flex: 0 0 auto;
 }
 
-.preview {
+.text {
   flex: 1 1 auto;
+  overflow: hidden;
+
+  .title {
+    display: flex;
+    align-items: center;
+
+    .name {
+      flex: 1 1 auto;
+    }
+  }
+
+  .date {
+    float: right;
+  }
 }

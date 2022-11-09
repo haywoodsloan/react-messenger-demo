@@ -9,7 +9,7 @@ import styles from './ConversationEntry.module.scss';
 
 export default function ConversationEntry() {
   return (
-    <div className={styles.container}>
+    <button className={classNames(styles.divLike, styles.container)}>
       <div
         className={classNames(
           styles.avatar,
@@ -19,18 +19,32 @@ export default function ConversationEntry() {
       >
         <Avatar />
       </div>
-      <div className={styles.preview}>
-        <div
-          className={classNames(
-            layout.smallMarginBottom,
-            fonts.semiBoldStyle,
-            colors.textPrimary
-          )}
-        >
-          Top Text
+      <div className={styles.text}>
+        <div className={classNames(styles.title, layout.smallMarginBottom)}>
+          <span
+            className={classNames(
+              styles.name,
+              layout.truncateTextEllipsis,
+              layout.mediumMarginRight,
+              fonts.semiBoldStyle,
+              colors.textPrimary
+            )}
+          >
+            Sloan Haywood
+          </span>
+          <span
+            className={classNames(
+              styles.date,
+              layout.smallMarginRight,
+              colors.textSecondary,
+              fonts.smallSize
+            )}
+          >
+            Fri
+          </span>
         </div>
         <div className={colors.textSecondary}>Bottom Text</div>
       </div>
-    </div>
+    </button>
   );
 }

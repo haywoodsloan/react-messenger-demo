@@ -5,6 +5,7 @@
 
 .convoList {
   flex: 0 0 15%;
+  overflow: hidden;
   border-right: 0.2rem solid var(--borderPrimary);
 }
 
