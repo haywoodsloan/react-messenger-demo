@@ -18,26 +18,26 @@
   &:focus {
     background-color: var(--fillTertiary);
   }
-}
 
-.avatar {
-  flex: 0 0 auto;
-}
-
-.text {
-  flex: 1 1 auto;
-  overflow: hidden;
-
-  .title {
-    display: flex;
-    align-items: center;
-
-    .name {
-      flex: 1 1 auto;
-    }
+  .avatar {
+    flex: 0 0 auto;
   }
 
-  .date {
-    float: right;
+  .text {
+    flex: 1 1 auto;
+    overflow: hidden;
+
+    .title {
+      display: flex;
+      align-items: center;
+
+      .name {
+        flex: 1 1 auto;
+      }
+    }
+
+    .date {
+      float: right;
+    }
   }
 }

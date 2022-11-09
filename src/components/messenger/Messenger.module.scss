@@ -1,14 +1,14 @@
 .container {
   display: flex;
   height: 100%;
-}
 
-.convoList {
-  flex: 0 0 15%;
-  overflow: hidden;
-  border-right: 0.2rem solid var(--borderPrimary);
-}
+  .convoList {
+    flex: 0 0 15%;
+    overflow: hidden;
+    border-right: 0.2rem solid var(--borderPrimary);
+  }
 
-.convoView {
-  flex: 1 1 auto;
+  .convoView {
+    flex: 1 1 auto;
+  }
 }
