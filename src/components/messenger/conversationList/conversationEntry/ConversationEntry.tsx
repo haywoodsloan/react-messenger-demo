@@ -13,7 +13,7 @@ export default function ConversationEntry() {
       <div
         className={classNames(
           styles.avatar,
-          layout.extraLargeMarginRight,
+          layout.largeMarginRight,
           layout.mediumMarginLeft
         )}
       >
@@ -35,7 +35,7 @@ export default function ConversationEntry() {
           <span
             className={classNames(
               styles.date,
-              layout.smallMarginRight,
+              layout.mediumMarginRight,
               colors.textSecondary,
               fonts.smallSize
             )}
@@ -43,7 +43,14 @@ export default function ConversationEntry() {
             Fri
           </span>
         </div>
-        <div className={colors.textSecondary}>Bottom Text</div>
+        <div
+          className={classNames(
+            colors.textSecondary,
+            layout.truncateTextEllipsis
+          )}
+        >
+          You: Hello World!
+        </div>
       </div>
     </button>
   );

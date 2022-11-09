@@ -1,5 +1,21 @@
 .container {
+  display: flex;
+  flex-direction: column;
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
+
+  .banner {
+    display: flex;
+    flex: 0 0 12rem;
+    align-items: center;
+    border-bottom: 0.2rem solid var(--borderPrimary);
+
+    .button {
+      margin: auto;
+    }
+  }
+
+  .list {
+    flex: 1 1 auto;
+    overflow-y: auto;
+  }
 }

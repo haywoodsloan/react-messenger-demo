@@ -3,6 +3,8 @@
 @each $name, $value in $spacing {
   .#{$name} {
     &Margin {
+      margin: #{$value};
+
       &Left {
         margin-left: #{$value};
       }
@@ -21,6 +23,8 @@
     }
 
     &Padding {
+      padding: #{$value};
+
       &Left {
         padding-left: #{$value};
       }

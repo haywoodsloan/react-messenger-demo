@@ -6,7 +6,7 @@
 .container {
   display: flex;
   align-items: center;
-  height: 10rem;
+  height: 9rem;
   cursor: pointer;
   transition: background-color 250ms;
 
@@ -16,7 +16,7 @@
 
   &:hover,
   &:focus {
-    background-color: var(--fillTertiary);
+    background-color: var(--fillPrimaryLight);
   }
 
   .avatar {

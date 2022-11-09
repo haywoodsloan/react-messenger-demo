@@ -1,0 +1,12 @@
+.container {
+  border: 0.4rem solid var(--borderSecondary);
+  border-radius: 2.7rem;
+  cursor: pointer;
+  transition: all 250ms;
+
+  &:hover,
+  &:focus {
+    background-color: var(--fillSecondaryLight);
+    transform: scale(1.05);
+  }
+}
