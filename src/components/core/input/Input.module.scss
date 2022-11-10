@@ -1,0 +1,11 @@
+.container {
+  display: inline;
+  overflow: hidden;
+  border: 0.3rem solid var(--borderSecondary);
+  border-radius: 3.4rem;
+
+  .textArea {
+    display: block;
+    width: 100%;
+  }
+}

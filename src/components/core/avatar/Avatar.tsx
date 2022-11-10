@@ -14,6 +14,7 @@ export default function Avatar() {
         colors.textTertiary,
         fonts.largeSize
       )}
+      aria-hidden="true"
     >
       SH
     </div>

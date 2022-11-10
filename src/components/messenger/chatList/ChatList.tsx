@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 
 import Button from 'src/components/core/button';
-import colors from 'src/styles/colors.module.scss';
 import fonts from 'src/styles/fonts.module.scss';
 import layout from 'src/styles/layout.module.scss';
 
@@ -17,13 +16,7 @@ export default function ChatList() {
   return (
     <div className={styles.container}>
       <div className={classNames(styles.banner, layout.largePaddingLeft)}>
-        <span
-          className={classNames(
-            fonts.extraLargeSize,
-            fonts.boldStyle,
-            colors.textPrimary
-          )}
-        >
+        <span className={classNames(fonts.extraLargeSize, fonts.semiBoldStyle)}>
           Messenger
         </span>
         <Button

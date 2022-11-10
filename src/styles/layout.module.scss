@@ -5,6 +5,16 @@
     &Margin {
       margin: #{$value};
 
+      &Horizontal {
+        margin-right: #{$value};
+        margin-left: #{$value};
+      }
+
+      &Vertical {
+        margin-top: #{$value};
+        margin-bottom: #{$value};
+      }
+
       &Left {
         margin-left: #{$value};
       }
@@ -24,6 +34,16 @@
 
     &Padding {
       padding: #{$value};
+
+      &Horizontal {
+        padding-right: #{$value};
+        padding-left: #{$value};
+      }
+
+      &Vertical {
+        padding-top: #{$value};
+        padding-bottom: #{$value};
+      }
 
       &Left {
         padding-left: #{$value};

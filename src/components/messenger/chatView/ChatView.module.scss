@@ -1,4 +1,32 @@
+@use '../variables.scss' as *;
+
 .container {
+  display: flex;
   overflow: hidden;
   height: 100%;
+  flex-direction: column;
+
+  .banner {
+    display: flex;
+    flex: 0 0 $bannerHeight;
+    align-items: center;
+    border-bottom: 0.2rem solid var(--borderPrimary);
+  }
+
+  .main {
+    flex: 1 1 auto;
+    overflow-y: auto;
+  }
+
+  .footer {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-top: 0.2rem solid var(--borderPrimary);
+  }
+
+  .input {
+    flex: 0 1 80rem;
+  }
 }

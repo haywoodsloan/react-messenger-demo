@@ -29,7 +29,8 @@ body {
   font-weight: map.get($fontWeight, 'normal');
 }
 
-button {
-  // unset all the default styling for buttons
+button,
+textarea {
+  // unset the default styles for elements we have custom components of
   all: unset;
 }

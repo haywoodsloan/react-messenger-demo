@@ -26,8 +26,7 @@ export default function ChatEntry() {
               styles.name,
               layout.truncateTextEllipsis,
               layout.mediumMarginRight,
-              fonts.semiBoldStyle,
-              colors.textPrimary
+              fonts.semiBoldStyle
             )}
           >
             Sloan Haywood
