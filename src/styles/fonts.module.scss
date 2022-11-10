@@ -2,13 +2,13 @@
 
 @each $name, $value in $fontWeight {
   .#{$name}Style {
-    font-weight: #{$value};
     font-style: normal;
+    font-weight: #{$value};
   }
 
   .#{$name}ItalicStyle {
-    font-weight: #{$value};
     font-style: italic;
+    font-weight: #{$value};
   }
 }
 

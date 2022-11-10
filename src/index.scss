@@ -17,17 +17,16 @@ body {
   // base layout
   margin: 0;
 
-  // base font
-  font-weight: map.get($fontWeight, 'normal');
-  font-size: map.get($fontSize, 'medium');
-  font-family: 'Open Sans', sans-serif;
-
   // color
   background-color: var(--fillPrimary);
+  color: var(--textPrimary);
 
-  // browser specific font optimizations
+  // font
+  font-family: 'Open Sans', sans-serif;
+  font-size: map.get($fontSize, 'medium');
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-weight: map.get($fontWeight, 'normal');
 }
 
 button {
