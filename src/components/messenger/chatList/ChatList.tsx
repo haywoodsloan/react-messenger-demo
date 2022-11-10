@@ -5,10 +5,10 @@ import colors from 'src/styles/colors.module.scss';
 import fonts from 'src/styles/fonts.module.scss';
 import layout from 'src/styles/layout.module.scss';
 
-import styles from './ConversationList.module.scss';
-import ConversationEntry from './conversationEntry';
+import styles from './ChatList.module.scss';
+import ChatEntry from './chatEntry';
 
-export default function ConversationList() {
+export default function ChatList() {
   const onNewMessage: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     alert('To unlock starting new chats please upgrade to premium for $99/mo!');
     event.currentTarget.blur();
@@ -33,11 +33,11 @@ export default function ConversationList() {
         />
       </div>
       <div className={styles.list}>
-        <ConversationEntry />
-        <ConversationEntry />
-        <ConversationEntry />
-        <ConversationEntry />
-        <ConversationEntry />
+        <ChatEntry />
+        <ChatEntry />
+        <ChatEntry />
+        <ChatEntry />
+        <ChatEntry />
       </div>
     </div>
   );

@@ -1,15 +1,15 @@
 import styles from './Messenger.module.scss';
-import ConversationList from './conversationList';
-import ConversationView from './conversationView';
+import ChatList from './chatList';
+import ChatView from './chatView';
 
 export default function Messenger() {
   return (
     <div className={styles.container}>
       <div className={styles.convoList}>
-        <ConversationList />
+        <ChatList />
       </div>
       <div className={styles.convoView}>
-        <ConversationView />
+        <ChatView />
       </div>
     </div>
   );

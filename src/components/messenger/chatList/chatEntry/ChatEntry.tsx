@@ -5,9 +5,9 @@ import colors from 'src/styles/colors.module.scss';
 import fonts from 'src/styles/fonts.module.scss';
 import layout from 'src/styles/layout.module.scss';
 
-import styles from './ConversationEntry.module.scss';
+import styles from './ChatEntry.module.scss';
 
-export default function ConversationEntry() {
+export default function ChatEntry() {
   return (
     <button className={styles.container}>
       <div
