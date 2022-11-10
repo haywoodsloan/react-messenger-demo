@@ -8,14 +8,16 @@ import styles from './Button.module.scss';
 
 interface Props {
   className?: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   text: string;
 }
 
-export default function Button({ className, text }: Props) {
+export default function Button({ className, onClick, text }: Props) {
   return (
-    <div
+    <button
       className={classNames(
         className,
+        styles.button,
         styles.container,
         colors.fillSecondary,
         colors.textTertiary,
@@ -23,8 +25,9 @@ export default function Button({ className, text }: Props) {
         fonts.semiBoldStyle,
         layout.mediumPadding
       )}
+      onClick={onClick}
     >
       {text}
-    </div>
+    </button>
   );
 }

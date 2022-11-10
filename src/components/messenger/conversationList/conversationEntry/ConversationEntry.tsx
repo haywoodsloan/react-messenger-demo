@@ -9,7 +9,7 @@ import styles from './ConversationEntry.module.scss';
 
 export default function ConversationEntry() {
   return (
-    <button className={classNames(styles.divLike, styles.container)}>
+    <button className={styles.container}>
       <div
         className={classNames(
           styles.avatar,

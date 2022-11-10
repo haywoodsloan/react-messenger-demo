@@ -29,3 +29,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+button {
+  // unset all the default styling for buttons
+  all: unset;
+}
