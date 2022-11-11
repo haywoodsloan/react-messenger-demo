@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useState } from 'react';
 
 import Button from 'src/components/core/button';
 import Input from 'src/components/core/input';
@@ -8,6 +9,8 @@ import layout from 'src/styles/layout.module.scss';
 import styles from './ChatView.module.scss';
 
 export default function ChatView() {
+  const [message, setMessage] = useState<string>('');
+
   return (
     <div className={styles.container}>
       <div
@@ -24,6 +27,8 @@ export default function ChatView() {
         <Input
           className={classNames(layout.largeMarginRight, styles.input)}
           placeholder="Type your message here"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
         />
         <Button text="➤ Send" />
       </div>

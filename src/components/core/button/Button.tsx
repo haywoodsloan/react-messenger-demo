@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { MouseEventHandler } from 'react';
 
 import colors from 'src/styles/colors.module.scss';
 import fonts from 'src/styles/fonts.module.scss';
@@ -8,7 +9,7 @@ import styles from './Button.module.scss';
 
 interface Props {
   className?: string;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   text: string;
 }
 
