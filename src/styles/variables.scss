@@ -3,10 +3,10 @@
 // color
 $color: (
   'textPrimary': white,
-  'textSecondary': lightgrey,
+  'textSecondary': color.scale(lightgrey, $lightness: 15%),
   'textTertiary': darkslategrey,
-  'fillPrimary': dimgrey,
-  'fillPrimaryLight': color.scale(dimgrey, $lightness: 20%),
+  'fillPrimary': color.scale(dimgrey, $lightness: -30%),
+  'fillPrimaryLight': color.scale(dimgrey, $lightness: -10%),
   'fillSecondary': lightgrey,
   'fillSecondaryLight': color.scale(lightgrey, $lightness: 50%),
   'borderPrimary': darkgrey,
@@ -23,7 +23,7 @@ $fontWeight: (
   'extraBold': 800,
 );
 $fontSize: (
-  'extraSmall': 1rem,
+  'extraSmall': 1.4rem,
   'small': 1.6rem,
   'medium': 2rem,
   'large': 2.5rem,
@@ -36,4 +36,9 @@ $spacing: (
   'medium': 0.8rem,
   'large': 1.2rem,
   'extraLarge': 2rem,
+);
+
+// media query screen widths
+$screenWidth: (
+  'small': 1024px,
 );

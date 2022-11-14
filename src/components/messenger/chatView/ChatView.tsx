@@ -7,6 +7,7 @@ import fonts from 'src/styles/fonts.module.scss';
 import layout from 'src/styles/layout.module.scss';
 
 import styles from './ChatView.module.scss';
+import MessageEntry from './messageEntry';
 
 export default function ChatView() {
   const [message, setMessage] = useState<string>('');
@@ -22,7 +23,15 @@ export default function ChatView() {
       >
         <span className={layout.extraLargeMarginLeft}>Sloan Haywood</span>
       </div>
-      <div className={styles.main}></div>
+      <div className={classNames(styles.main, layout.extraLargePaddingTop)}>
+        <div className={styles.spacer} />
+        <MessageEntry fromSelf={true} clusterStart={true} clusterEnd={false} />
+        <MessageEntry fromSelf={true} clusterStart={false} clusterEnd={false} />
+        <MessageEntry fromSelf={true} clusterStart={false} clusterEnd={true} />
+        <MessageEntry fromSelf={false} clusterStart={true} clusterEnd={false} />
+        <MessageEntry fromSelf={false} clusterStart={false} clusterEnd={true} />
+        <MessageEntry fromSelf={true} clusterStart={true} clusterEnd={true} />
+      </div>
       <div className={classNames(styles.footer, layout.largePadding)}>
         <Input
           className={classNames(layout.extraLargeMarginRight, styles.input)}

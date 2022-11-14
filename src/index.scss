@@ -3,14 +3,11 @@
 
 @import 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap';
 
-:root {
-  // root font size to use rem units elsewhere
-  font-size: 10px;
-
-  // dynamic color vars, for future color themes
-  @each $name, $value in $color {
-    --#{$name}: #{$value};
-  }
+body,
+html,
+#root {
+  // fill the height for child components to handle scroll
+  height: 100%;
 }
 
 body {
@@ -27,6 +24,16 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: map.get($fontWeight, 'normal');
+}
+
+:root {
+  // root font size to use rem units elsewhere
+  font-size: 10px;
+
+  // dynamic color vars, for future color themes
+  @each $name, $value in $color {
+    --#{$name}: #{$value};
+  }
 }
 
 button,

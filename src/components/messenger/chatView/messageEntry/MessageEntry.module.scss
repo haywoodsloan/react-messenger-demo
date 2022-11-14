@@ -1,3 +1,43 @@
+@use 'sass:map';
+@use 'sass:color';
+@use 'src/styles/variables.scss' as *;
+
 .container {
-  // TODO
+  border-radius: 2.55rem;
+  background-color: color.scale(blue, $lightness: -35%);
+
+  @media (min-width: map.get($screenWidth, 'small')) {
+    max-width: 45%;
+    align-self: flex-start;
+  }
+
+  &.fromSelf {
+    background-color: color.scale(red, $lightness: -35%);
+
+    @media (min-width: map.get($screenWidth, 'small')) {
+      align-self: flex-end;
+    }
+
+    &:not(.clusterStart) {
+      border-top-right-radius: 0;
+    }
+
+    &:not(.clusterEnd) {
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  &:not(.fromSelf) {
+    &:not(.clusterStart) {
+      border-top-left-radius: 0;
+    }
+
+    &:not(.clusterEnd) {
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  .date {
+    white-space: nowrap;
+  }
 }
