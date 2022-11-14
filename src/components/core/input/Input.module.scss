@@ -1,12 +1,23 @@
 .container {
   display: inline-block;
   overflow: hidden;
-  border: 0.3rem solid var(--borderSecondary);
-  border-radius: 3.4rem;
+  border: 0.4rem solid var(--borderSecondary);
+  border-radius: 2.95rem;
+  box-shadow: rgb(0 0 0 / 16%) 0 3px 6px, rgb(0 0 0 / 23%) 0 3px 6px;
+  transition: all 250ms;
   word-break: break-word;
 
   .textArea {
     display: block;
     width: 100%;
+  }
+
+  &:hover,
+  &:focus-within {
+    background-color: var(--fillSecondaryLight);
+  }
+
+  &:focus-within {
+    border-color: var(--borderSecondaryLight);
   }
 }

@@ -25,7 +25,7 @@ export default function ChatView() {
       <div className={styles.main}></div>
       <div className={classNames(styles.footer, layout.largePadding)}>
         <Input
-          className={classNames(layout.largeMarginRight, styles.input)}
+          className={classNames(layout.extraLargeMarginRight, styles.input)}
           placeholder="Type your message here"
           value={message}
           onChange={(e) => setMessage(e.target.value)}

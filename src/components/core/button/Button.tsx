@@ -24,7 +24,8 @@ export default function Button({ className, onClick, text }: Props) {
         colors.textTertiary,
         fonts.mediumSize,
         fonts.semiBoldStyle,
-        layout.mediumPadding
+        layout.mediumPaddingVertical,
+        layout.largePaddingHorizontal
       )}
       onClick={onClick}
     >

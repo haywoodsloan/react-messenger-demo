@@ -10,13 +10,7 @@ import styles from './ChatEntry.module.scss';
 export default function ChatEntry() {
   return (
     <button className={styles.container}>
-      <div
-        className={classNames(
-          styles.avatar,
-          layout.largeMarginRight,
-          layout.mediumMarginLeft
-        )}
-      >
+      <div className={classNames(styles.avatar, layout.largeMarginHorizontal)}>
         <Avatar />
       </div>
       <div className={styles.text}>

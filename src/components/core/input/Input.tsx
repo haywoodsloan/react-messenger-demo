@@ -35,42 +35,42 @@ export default function Input({
   const [verticalPadding, setVerticalPadding] = useState(0);
 
   useEffect(() => {
-    if (!textAreaRef.current || !containerRef.current) {
-      return;
+    if (textAreaRef.current) {
+      const computedStyles = getComputedStyle(textAreaRef.current);
+      setVerticalPadding(
+        parseInt(computedStyles.paddingBottom) +
+          parseInt(computedStyles.paddingTop)
+      );
     }
 
-    setLineHeight(getLineHeight(containerRef.current));
-    if (document.fonts.status !== 'loaded') {
-      document.fonts.ready.then(() => {
-        if (containerRef.current) {
-          setLineHeight(getLineHeight(containerRef.current));
-        }
-      });
-    }
+    const updateLineHeight = () => {
+      if (containerRef.current) {
+        setLineHeight(getLineHeight(containerRef.current));
+      }
+    };
 
-    const computedStyles = getComputedStyle(textAreaRef.current);
-    setVerticalPadding(
-      parseInt(computedStyles.paddingBottom) +
-        parseInt(computedStyles.paddingTop)
-    );
+    updateLineHeight();
+    document.fonts.addEventListener('loadingdone', updateLineHeight);
+
+    return () => {
+      document.fonts.removeEventListener('loadingdone', updateLineHeight);
+    };
   }, []);
 
   useLayoutEffect(() => {
-    if (!textAreaRef.current) {
-      return;
-    }
+    if (textAreaRef.current) {
+      textAreaRef.current.style.height = '0';
+      textAreaRef.current.style.overflowY = 'hidden';
 
-    textAreaRef.current.style.height = '0';
-    textAreaRef.current.style.overflowY = 'hidden';
+      const coreHeight = textAreaRef.current.scrollHeight - verticalPadding;
+      const lineCount = coreHeight / lineHeight;
 
-    const coreHeight = textAreaRef.current.scrollHeight - verticalPadding;
-    const lineCount = coreHeight / lineHeight;
-
-    if (lineCount > maxLines) {
-      textAreaRef.current.style.overflowY = 'auto';
-      textAreaRef.current.style.height = `${maxLines * lineHeight}px`;
-    } else {
-      textAreaRef.current.style.height = `${lineCount * lineHeight}px`;
+      if (lineCount > maxLines) {
+        textAreaRef.current.style.overflowY = 'auto';
+        textAreaRef.current.style.height = `${maxLines * lineHeight}px`;
+      } else {
+        textAreaRef.current.style.height = `${lineCount * lineHeight}px`;
+      }
     }
   }, [value, lineHeight, verticalPadding]);
 
@@ -80,7 +80,7 @@ export default function Input({
       className={classNames(
         className,
         styles.container,
-        layout.largePaddingHorizontal,
+        layout.extraLargePaddingHorizontal,
         colors.fillSecondary
       )}
     >
@@ -88,7 +88,6 @@ export default function Input({
         ref={textAreaRef}
         className={classNames(
           styles.textArea,
-          colors.fillSecondary,
           colors.textTertiary,
           layout.largePaddingVertical
         )}
