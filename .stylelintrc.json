@@ -10,6 +10,7 @@
         "custom-property-pattern": "^[a-z][a-zA-Z0-9]+$",
         "scss/percent-placeholder-pattern": "^[a-z][a-zA-Z0-9]+$",
         "scss/dollar-variable-pattern": "^[a-z][a-zA-Z0-9]+$",
+        "no-descending-specificity": null,
         "value-keyword-case": [
             "lower",
             {
