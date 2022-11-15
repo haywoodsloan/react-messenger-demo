@@ -36,8 +36,27 @@ body {
   }
 }
 
-button,
-textarea {
-  // unset the default styles for elements we have custom components of
-  all: unset;
+// Scrollbar
+::-webkit-scrollbar {
+  width: 1rem;
+  height: 1rem;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 1rem;
+  background-color: var(--scrollbarPrimary);
+  transition: all 5s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbarPrimaryDark);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+* {
+  scrollbar-color: var(--scrollbarPrimary) transparent;
+  scrollbar-width: thin;
 }

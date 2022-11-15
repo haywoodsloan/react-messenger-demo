@@ -5,11 +5,17 @@
   border-radius: 2.95rem;
   box-shadow: rgb(0 0 0 / 16%) 0 3px 6px, rgb(0 0 0 / 23%) 0 3px 6px;
   transition: all 250ms;
+  white-space: pre-wrap;
   word-break: break-word;
 
   .textArea {
     display: block;
     width: 100%;
+    border: none;
+    background-color: transparent;
+    font: inherit;
+    outline: none;
+    resize: none;
   }
 
   &:hover,

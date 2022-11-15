@@ -3,15 +3,17 @@
 // color
 $color: (
   'textPrimary': white,
-  'textSecondary': color.scale(lightgrey, $lightness: 15%),
+  'textSecondary': lightgrey,
   'textTertiary': darkslategrey,
-  'fillPrimary': color.scale(dimgrey, $lightness: -30%),
-  'fillPrimaryLight': color.scale(dimgrey, $lightness: -10%),
+  'fillPrimary': color.scale(dimgrey, $lightness: -45%),
+  'fillPrimaryLight': color.scale(dimgrey, $lightness: -20%),
   'fillSecondary': lightgrey,
   'fillSecondaryLight': color.scale(lightgrey, $lightness: 50%),
   'borderPrimary': darkgrey,
-  'borderSecondary': darkslategrey,
+  'borderSecondary': slategrey,
   'borderSecondaryLight': cadetblue,
+  'scrollbarPrimary': darkgrey,
+  'scrollbarPrimaryDark': color.scale(darkgrey, $lightness: -30%),
 );
 
 // font
