@@ -23,14 +23,41 @@ export default function ChatView() {
       >
         <span className={layout.extraLargeMarginLeft}>Sloan Haywood</span>
       </div>
-      <div className={classNames(styles.main, layout.extraLargePaddingTop)}>
-        <div className={styles.spacer} />
-        <MessageEntry fromSelf={true} clusterStart={true} clusterEnd={false} />
-        <MessageEntry fromSelf={true} clusterStart={false} clusterEnd={false} />
-        <MessageEntry fromSelf={true} clusterStart={false} clusterEnd={true} />
-        <MessageEntry fromSelf={false} clusterStart={true} clusterEnd={false} />
-        <MessageEntry fromSelf={false} clusterStart={false} clusterEnd={true} />
-        <MessageEntry fromSelf={true} clusterStart={true} clusterEnd={true} />
+      <div
+        className={classNames(
+          styles.scrollWrapper,
+          layout.extraLargePaddingTop
+        )}
+      >
+        <div className={styles.main}>
+          <div className={styles.spacer} />
+          <MessageEntry
+            fromSelf={true}
+            clusterStart={true}
+            clusterEnd={false}
+          />
+          <MessageEntry
+            fromSelf={true}
+            clusterStart={false}
+            clusterEnd={false}
+          />
+          <MessageEntry
+            fromSelf={true}
+            clusterStart={false}
+            clusterEnd={true}
+          />
+          <MessageEntry
+            fromSelf={false}
+            clusterStart={true}
+            clusterEnd={false}
+          />
+          <MessageEntry
+            fromSelf={false}
+            clusterStart={false}
+            clusterEnd={true}
+          />
+          <MessageEntry fromSelf={true} clusterStart={true} clusterEnd={true} />
+        </div>
       </div>
       <div className={classNames(styles.footer, layout.largePadding)}>
         <Input

@@ -39,7 +39,9 @@ export default function MessageEntry({
             [styles.clusterStart]: clusterStart,
           })}
         >
-          Hey
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Tempus
+          egestas sed sed risus pretium quam vulputate dignissim suspendisse.
         </div>
         {clusterEnd && (
           <div

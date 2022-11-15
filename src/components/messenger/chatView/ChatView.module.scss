@@ -13,17 +13,20 @@
     border-bottom: 0.2rem solid var(--borderPrimary);
   }
 
-  .main {
-    display: flex;
-    width: 100%;
-    max-width: 100rem;
+  .scrollWrapper {
     flex: 1 1 auto;
-    flex-direction: column;
-    align-self: center;
     overflow-y: auto;
 
-    .spacer {
-      flex: 1 1 auto;
+    .main {
+      display: flex;
+      max-width: 100rem;
+      min-height: 100%;
+      flex-direction: column;
+      margin: 0 auto;
+
+      .spacer {
+        flex: 1 1 auto;
+      }
     }
   }
 
