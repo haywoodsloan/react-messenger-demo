@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 
 import Button from 'src/components/core/button';
+import { useRealtimeChats } from 'src/hooks/realtime';
 import fonts from 'src/styles/fonts.module.scss';
 import layout from 'src/styles/layout.module.scss';
 
@@ -12,6 +13,8 @@ export default function ChatList() {
     alert('To unlock starting new chats please upgrade to premium for $99/mo!');
     event.currentTarget.blur();
   };
+
+  const chats = useRealtimeChats('self'); // TODO get the userId from the store too
 
   return (
     <div className={styles.container}>
@@ -26,11 +29,9 @@ export default function ChatList() {
         />
       </div>
       <div className={styles.list}>
-        <ChatEntry />
-        <ChatEntry />
-        <ChatEntry />
-        <ChatEntry />
-        <ChatEntry />
+        {chats.map((chat) => (
+          <ChatEntry key={chat.chatId} />
+        ))}
       </div>
     </div>
   );
