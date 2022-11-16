@@ -30,33 +30,42 @@ export default function ChatView() {
         )}
       >
         <div className={styles.main}>
-          <div className={styles.spacer} />
-          <MessageEntry
-            fromSelf={true}
-            clusterStart={true}
-            clusterEnd={false}
-          />
-          <MessageEntry
-            fromSelf={true}
-            clusterStart={false}
-            clusterEnd={false}
-          />
-          <MessageEntry
-            fromSelf={true}
-            clusterStart={false}
-            clusterEnd={true}
-          />
-          <MessageEntry
-            fromSelf={false}
-            clusterStart={true}
-            clusterEnd={false}
-          />
-          <MessageEntry
-            fromSelf={false}
-            clusterStart={false}
-            clusterEnd={true}
-          />
           <MessageEntry fromSelf={true} clusterStart={true} clusterEnd={true} />
+          <MessageEntry
+            fromSelf={false}
+            clusterStart={false}
+            clusterEnd={true}
+          />
+          <MessageEntry
+            fromSelf={false}
+            clusterStart={true}
+            clusterEnd={false}
+          />
+          <MessageEntry
+            fromSelf={true}
+            clusterStart={false}
+            clusterEnd={true}
+          />
+          <MessageEntry
+            fromSelf={true}
+            clusterStart={false}
+            clusterEnd={false}
+          />
+          <MessageEntry
+            fromSelf={true}
+            clusterStart={true}
+            clusterEnd={false}
+          />
+          <MessageEntry
+            fromSelf={false}
+            clusterStart={false}
+            clusterEnd={true}
+          />
+          <MessageEntry
+            fromSelf={false}
+            clusterStart={true}
+            clusterEnd={false}
+          />
         </div>
       </div>
       <div className={classNames(styles.footer, layout.largePadding)}>

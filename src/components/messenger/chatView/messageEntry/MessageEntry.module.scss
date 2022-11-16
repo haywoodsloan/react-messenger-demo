@@ -1,7 +1,9 @@
+@use 'sass:color';
+
 .container {
   display: flex;
   overflow: hidden;
-  max-width: 45%;
+  max-width: 60%;
   flex: 0 0 auto;
   align-self: flex-start;
 
@@ -23,6 +25,7 @@
   }
 
   &.fromSelf {
+    max-width: calc(60% - 6.2rem);
     align-self: flex-end;
     text-align: end;
 
