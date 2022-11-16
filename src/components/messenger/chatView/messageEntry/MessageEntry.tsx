@@ -29,34 +29,31 @@ export default function MessageEntry({
         }
       )}
     >
-      {!fromSelf && (
-        <div className={styles.avatar}>{clusterEnd && <Avatar />}</div>
-      )}
-      <div>
-        <div
-          className={classNames(styles.bubble, layout.largePadding, {
-            [styles.clusterEnd]: clusterEnd,
-            [styles.clusterStart]: clusterStart,
-          })}
-        >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Tempus
-          egestas sed sed risus pretium quam vulputate dignissim suspendisse.
-        </div>
-        {clusterEnd && (
-          <div
-            className={classNames(
-              styles.date,
-              colors.textSecondary,
-              fonts.extraSmallSize,
-              layout.smallMarginTop,
-              layout.mediumMarginLeft
-            )}
-          >
-            10:00 AM, Nov 11
-          </div>
-        )}
+      {!fromSelf && <div>{clusterEnd && <Avatar />}</div>}
+      <div
+        className={classNames(styles.bubble, layout.largePadding, {
+          [styles.clusterEnd]: clusterEnd,
+          [styles.clusterStart]: clusterStart,
+        })}
+      >
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Tempus egestas sed
+        sed risus pretium quam vulputate dignissim suspendisse.
       </div>
+      {!fromSelf && <div />}
+      {clusterEnd && (
+        <div
+          className={classNames(
+            styles.date,
+            colors.textSecondary,
+            fonts.extraSmallSize,
+            layout.smallMarginTop,
+            layout.mediumMarginLeft
+          )}
+        >
+          10:00 AM, Nov 11
+        </div>
+      )}
     </div>
   );
 }

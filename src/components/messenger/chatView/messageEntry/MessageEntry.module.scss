@@ -1,18 +1,12 @@
 @use 'sass:color';
 
 .container {
-  display: flex;
+  display: grid;
   overflow: hidden;
   max-width: 60%;
   flex: 0 0 auto;
+  align-items: end;
   align-self: flex-start;
-
-  .avatar {
-    width: 6.2rem;
-    flex: 0 0 auto;
-    align-self: flex-end;
-    margin-bottom: 2.3rem;
-  }
 
   .date {
     white-space: nowrap;
@@ -27,6 +21,7 @@
   &.fromSelf {
     max-width: calc(60% - 6.2rem);
     align-self: flex-end;
+    grid-template-columns: 1fr;
     text-align: end;
 
     .bubble {
@@ -43,6 +38,8 @@
   }
 
   &:not(.fromSelf) {
+    grid-template-columns: 6.2rem 1fr;
+
     .bubble {
       background-color: color.scale(blue, $lightness: -35%);
 
