@@ -1,10 +1,14 @@
 import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit';
 
 import chatReducer from './messenger/chats';
+import messageReducer from './messenger/messages';
+import userReducer from './profiles/users';
 
 export const store = configureStore({
   reducer: {
     chats: chatReducer,
+    users: userReducer,
+    messages: messageReducer,
   },
 });
 

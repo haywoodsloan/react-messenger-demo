@@ -1,7 +1,10 @@
 import classNames from 'classnames';
 
 import Button from 'src/components/core/button';
-import { useRealtimeChats } from 'src/hooks/realtime';
+import { useLiveChatsByUserId, useMessagesById } from 'src/hooks/messenger';
+import { useLiveUsersById } from 'src/hooks/profiles';
+import { useAppSelector } from 'src/hooks/store';
+import { selectActiveUserId } from 'src/store/profiles/users';
 import fonts from 'src/styles/fonts.module.scss';
 import layout from 'src/styles/layout.module.scss';
 
@@ -14,7 +17,12 @@ export default function ChatList() {
     event.currentTarget.blur();
   };
 
-  const chats = useRealtimeChats('self'); // TODO get the userId from the store too
+  const activeUserId = useAppSelector(selectActiveUserId);
+  const chats = useLiveChatsByUserId(activeUserId);
+  useMessagesById(chats.map((c) => c.lastMessageId));
+  useLiveUsersById(
+    chats.flatMap((c) => c.participantIds.filter((id) => id !== activeUserId))
+  );
 
   return (
     <div className={styles.container}>

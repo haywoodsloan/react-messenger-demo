@@ -53,10 +53,10 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--scrollbarSecondary);
 }
 
 * {
-  scrollbar-color: var(--scrollbarPrimary) transparent;
+  scrollbar-color: var(--scrollbarPrimary) var(--scrollbarSecondary);
   scrollbar-width: thin;
 }

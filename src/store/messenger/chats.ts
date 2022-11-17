@@ -2,10 +2,11 @@ import {
   PayloadAction,
   createAsyncThunk,
   createEntityAdapter,
+  createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
 
-import { getChats, patchChat } from 'src/api/messenger/chats';
+import { getChatsByUserId, patchChat } from 'src/api/messenger';
 import { RootState } from 'src/store';
 import { Chat, ChatUpdateDTO } from 'src/types/api';
 
@@ -15,11 +16,11 @@ interface BaseChatState {
 
 export const fetchChatsByUserId = createAsyncThunk(
   'chats/fetchByUserId',
-  async (userId: string) => await getChats(userId)
+  async (userId: string) => await getChatsByUserId(userId)
 );
 
-export const updateChat = createAsyncThunk(
-  'chats/updateChat',
+export const sendChatUpdate = createAsyncThunk(
+  'chats/sendUpdate',
   async (chat: ChatUpdateDTO) => await patchChat(chat)
 );
 
@@ -35,7 +36,7 @@ export const chatSlice = createSlice({
   name: 'chats',
   initialState,
   reducers: {
-    realtimeChatUpdate(state, action: PayloadAction<Chat>) {
+    upsertChat(state, action: PayloadAction<Chat>) {
       chatAdapter.upsertOne(state, action.payload);
     },
   },
@@ -51,7 +52,7 @@ export const chatSlice = createSlice({
       .addCase(fetchChatsByUserId.rejected, (state) => {
         state.status = 'failed';
       })
-      .addCase(updateChat.fulfilled, (state, action) => {
+      .addCase(sendChatUpdate.fulfilled, (state, action) => {
         chatAdapter.updateOne(state, {
           id: action.payload.chatId,
           changes: action.payload,
@@ -60,10 +61,13 @@ export const chatSlice = createSlice({
   },
 });
 
-export const { realtimeChatUpdate } = chatSlice.actions;
-
+export const { upsertChat: updateChat } = chatSlice.actions;
 export const selectChatStatus = (state: RootState) => state.chats.status;
 export const { selectAll: selectAllChats, selectById: selectChatById } =
   chatAdapter.getSelectors<RootState>((state) => state.chats);
+export const selectChatsByUserId = createSelector(
+  [selectAllChats, (_, userId: string) => userId],
+  (chats, userId) => chats.filter((c) => c.participantIds.includes(userId))
+);
 
 export default chatSlice.reducer;
