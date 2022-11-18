@@ -1,6 +1,9 @@
 import classNames from 'classnames';
 
 import Avatar from 'src/components/core/avatar';
+import { useAppSelector } from 'src/hooks/store';
+import { selectMessageById } from 'src/store/messenger/messages';
+import { selectActiveUserId } from 'src/store/profiles/users';
 import colors from 'src/styles/colors.module.scss';
 import fonts from 'src/styles/fonts.module.scss';
 import layout from 'src/styles/layout.module.scss';
@@ -8,16 +11,27 @@ import layout from 'src/styles/layout.module.scss';
 import styles from './MessageEntry.module.scss';
 
 interface Props {
-  fromSelf: boolean; // TODO remove once real data is being used
+  messageId: string;
   clusterStart: boolean;
   clusterEnd: boolean;
 }
 
 export default function MessageEntry({
-  fromSelf,
+  messageId,
   clusterStart,
   clusterEnd,
 }: Props) {
+  const activeUserId = useAppSelector(selectActiveUserId);
+  const message = useAppSelector((state) =>
+    selectMessageById(state, messageId)
+  );
+
+  const fromSelf = message?.senderId === activeUserId;
+
+  if (!message) {
+    return null;
+  }
+
   return (
     <div
       className={classNames(
@@ -29,16 +43,16 @@ export default function MessageEntry({
         }
       )}
     >
-      {!fromSelf && <div>{clusterEnd && <Avatar />}</div>}
+      {!fromSelf && (
+        <div>{clusterEnd && <Avatar userIds={[message.senderId]} />}</div>
+      )}
       <div
         className={classNames(styles.bubble, layout.largePadding, {
           [styles.clusterEnd]: clusterEnd,
           [styles.clusterStart]: clusterStart,
         })}
       >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Tempus egestas sed
-        sed risus pretium quam vulputate dignissim suspendisse.
+        {message.content}
       </div>
       {!fromSelf && <div />}
       {clusterEnd && (

@@ -9,13 +9,15 @@ import {
 import {
   getMessagesByChatId,
   getMessagesById,
+  patchMessages,
   postMessage,
 } from 'src/api/messenger';
 import { RootState } from 'src/store';
-import { Message, MessageAddDTO } from 'src/types/api';
+import { Message, MessageAddDTO, MessageUpdateDTO } from 'src/types/api';
 
 interface BaseMessageState {
   status: 'init' | 'loading' | 'loaded' | 'failed';
+  lastChatId: string;
 }
 
 export const fetchMessagesById = createAsyncThunk(
@@ -33,12 +35,18 @@ export const sendNewMessage = createAsyncThunk(
   async (message: MessageAddDTO) => await postMessage(message)
 );
 
+export const sendMessageUpdates = createAsyncThunk(
+  'messages/sendUpdates',
+  async (messages: MessageUpdateDTO[]) => await patchMessages(messages)
+);
+
 const messageAdapter = createEntityAdapter<Message>({
   selectId: (message) => message.messageId,
 });
 
 const initialState = messageAdapter.getInitialState<BaseMessageState>({
   status: 'init',
+  lastChatId: '',
 });
 
 export const messageSlice = createSlice({
@@ -69,22 +77,39 @@ export const messageSlice = createSlice({
       })
       .addCase(fetchMessagesByChatId.fulfilled, (state, action) => {
         state.status = 'loaded';
+        state.lastChatId = action.meta.arg;
         messageAdapter.upsertMany(state, action.payload);
       })
       .addCase(sendNewMessage.fulfilled, (state, action) => {
         messageAdapter.addOne(state, action.payload);
+      })
+      .addCase(sendMessageUpdates.fulfilled, (state, action) => {
+        messageAdapter.updateMany(
+          state,
+          action.payload.map((u) => ({
+            id: u.messageId,
+            changes: u,
+          }))
+        );
       });
   },
 });
 
 export const { upsertMessage } = messageSlice.actions;
+
 export const selectMessageStatus = (state: RootState) => state.messages.status;
+
+export const selectLastChatIdForMessages = (state: RootState) =>
+  state.messages.lastChatId;
+
 export const { selectAll: selectAllMessages, selectById: selectMessageById } =
   messageAdapter.getSelectors<RootState>((state) => state.messages);
+
 export const selectMessagesByChatId = createSelector(
   [selectAllMessages, (_, chatId: string) => chatId],
   (messages, chatId) => messages.filter((m) => m.chatId === chatId)
 );
+
 export const selectMessagesById = createSelector(
   [selectAllMessages, (_, messageIds: string[]) => messageIds],
   (messages, messageIds) => {

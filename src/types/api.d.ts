@@ -4,7 +4,7 @@
  */
 
 /**
- * A chat conversation the current user is a participant in
+ * A chat conversation the current user is a participant in.
  */
 export interface Chat {
   /** The ID of this chat */
@@ -18,8 +18,8 @@ export interface Chat {
 }
 
 /**
- * Data transfer object for updating a chat,
- * only the last message ID can change
+ * Data transfer object for updating a chat.
+ * Only the last message ID can change.
  */
 export type ChatUpdateDTO = Pick<Chat, 'chatId' | 'lastMessageId'>;
 
@@ -38,7 +38,7 @@ export interface User {
 }
 
 /**
- * A message sent to a chat
+ * A message sent to a chat.
  */
 export interface Message {
   /** The ID of this message */
@@ -56,12 +56,18 @@ export interface Message {
   /** The text content of the message */
   content: string;
 
-  /** Whether the active user has read this message */
-  isRead: boolean;
+  /** The IDs for the users who have read this message */
+  readBy: string[];
 }
 
 /**
- * Data transfer object for adding a message,
- * omits the message ID as the API will return this
+ * Data transfer object for adding a message.
+ * Omits messageId, readBy, and sentAt as the API will return this.
  */
-export type MessageAddDTO = Omit<Message, 'messageId' | 'isRead' | 'sentAt'>;
+export type MessageAddDTO = Omit<Message, 'messageId' | 'readBy' | 'sentAt'>;
+
+/**
+ * Data transfer object for updating a message.
+ * Can only update the readBy field.
+ */
+export type MessageUpdateDTO = Pick<Message, 'messageId' | 'readBy'>;

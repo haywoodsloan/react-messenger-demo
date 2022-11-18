@@ -54,11 +54,15 @@ export const userSlice = createSlice({
 });
 
 export const { upsertUser: updateUser } = userSlice.actions;
+
 export const selectUserStatus = (state: RootState) => state.users.status;
+
 export const selectActiveUserId = (state: RootState) =>
   state.users.activeUserId;
+
 export const { selectAll: selectAllUsers, selectById: selectUserById } =
   userAdapter.getSelectors<RootState>((state) => state.users);
+
 export const selectUsersById = createSelector(
   [selectAllUsers, (_, userIds: string[]) => userIds],
   (users, userIds) => {

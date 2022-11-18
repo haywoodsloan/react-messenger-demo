@@ -22,6 +22,10 @@
     background-color: var(--fillPrimaryLight);
   }
 
+  &.selected {
+    background-color: var(--fillPrimarySemiLight);
+  }
+
   .avatar {
     flex: 0 0 auto;
   }

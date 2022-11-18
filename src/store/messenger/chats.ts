@@ -12,6 +12,7 @@ import { Chat, ChatUpdateDTO } from 'src/types/api';
 
 interface BaseChatState {
   status: 'init' | 'loading' | 'loaded' | 'failed';
+  lastUserId: string;
 }
 
 export const fetchChatsByUserId = createAsyncThunk(
@@ -30,6 +31,7 @@ const chatAdapter = createEntityAdapter<Chat>({
 
 const initialState = chatAdapter.getInitialState<BaseChatState>({
   status: 'init',
+  lastUserId: '',
 });
 
 export const chatSlice = createSlice({
@@ -47,6 +49,7 @@ export const chatSlice = createSlice({
       })
       .addCase(fetchChatsByUserId.fulfilled, (state, action) => {
         state.status = 'loaded';
+        state.lastUserId = action.meta.arg;
         chatAdapter.upsertMany(state, action.payload);
       })
       .addCase(fetchChatsByUserId.rejected, (state) => {
@@ -62,9 +65,15 @@ export const chatSlice = createSlice({
 });
 
 export const { upsertChat: updateChat } = chatSlice.actions;
+
 export const selectChatStatus = (state: RootState) => state.chats.status;
+
+export const selectLastUserIdForChats = (state: RootState) =>
+  state.chats.lastUserId;
+
 export const { selectAll: selectAllChats, selectById: selectChatById } =
   chatAdapter.getSelectors<RootState>((state) => state.chats);
+
 export const selectChatsByUserId = createSelector(
   [selectAllChats, (_, userId: string) => userId],
   (chats, userId) => chats.filter((c) => c.participantIds.includes(userId))
