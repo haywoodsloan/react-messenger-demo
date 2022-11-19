@@ -13,14 +13,9 @@ interface Props {
 }
 
 export default function Avatar({ userIds }: Props) {
-  const user = useAppSelector((state) => {
-    if (userIds.length > 1) {
-      return;
-    }
-
-    const userId = userIds[0];
-    return selectUserById(state, userId);
-  });
+  const user = useAppSelector((state) =>
+    userIds.length === 1 ? selectUserById(state, userIds[0]) : undefined
+  );
 
   const text = useMemo(() => {
     return user
