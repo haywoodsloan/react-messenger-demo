@@ -4,6 +4,9 @@ import {
   createEntityAdapter,
   createSelector,
   createSlice,
+  isFulfilled,
+  isPending,
+  isRejected,
 } from '@reduxjs/toolkit';
 
 import { getUsersById } from 'src/api/messenger';
@@ -19,6 +22,10 @@ export const fetchUsersById = createAsyncThunk(
   'users/fetchByIds',
   async (userIds: string[]) => await getUsersById(userIds)
 );
+
+const isPendingAction = isPending(fetchUsersById);
+const isFulfilledAction = isFulfilled(fetchUsersById);
+const isRejectedAction = isRejected(fetchUsersById);
 
 const userAdapter = createEntityAdapter<User>({
   selectId: (user) => user.userId,
@@ -40,14 +47,16 @@ export const userSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchUsersById.pending, (state) => {
-        state.status = 'loading';
-      })
       .addCase(fetchUsersById.fulfilled, (state, action) => {
-        state.status = 'loaded';
         userAdapter.upsertMany(state, action.payload);
       })
-      .addCase(fetchUsersById.rejected, (state) => {
+      .addMatcher(isPendingAction, (state) => {
+        state.status = 'loading';
+      })
+      .addMatcher(isFulfilledAction, (state) => {
+        state.status = 'loaded';
+      })
+      .addMatcher(isRejectedAction, (state) => {
         state.status = 'failed';
       });
   },
@@ -60,15 +69,19 @@ export const selectUserStatus = (state: RootState) => state.users.status;
 export const selectActiveUserId = (state: RootState) =>
   state.users.activeUserId;
 
-export const { selectAll: selectAllUsers, selectById: selectUserById } =
-  userAdapter.getSelectors<RootState>((state) => state.users);
+export const {
+  selectAll: selectAllUsers,
+  selectById: selectUserById,
+  selectEntities: selectUserEntities,
+} = userAdapter.getSelectors<RootState>((state) => state.users);
 
 export const selectUsersById = createSelector(
-  [selectAllUsers, (_, userIds: string[]) => userIds],
-  (users, userIds) => {
-    const userIdSet = new Set(userIds);
-    return users.filter((u) => userIdSet.has(u.userId));
-  }
+  [selectUserEntities, (_, userIds: string[]) => userIds],
+  (users, userIds) =>
+    userIds.flatMap((id) => {
+      const user = users[id];
+      return user ? [user] : [];
+    })
 );
 
 export default userSlice.reducer;

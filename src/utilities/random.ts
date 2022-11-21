@@ -19,7 +19,8 @@ export function randomUUID() {
 }
 
 /** Selects a random element from the given array */
-export function randomSample<T>(arr: T[]) {
+export function randomSample<T>(arr: T[], exclude?: T) {
+  arr = exclude ? arr.filter((value) => value !== exclude) : arr;
   return arr[(Math.random() * arr.length) | 0];
 }
 

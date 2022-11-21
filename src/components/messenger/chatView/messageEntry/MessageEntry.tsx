@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useMemo } from 'react';
 
 import Avatar from 'src/components/core/avatar';
 import { useAppSelector } from 'src/hooks/store';
@@ -7,6 +8,7 @@ import { selectActiveUserId } from 'src/store/profiles/users';
 import colors from 'src/styles/colors.module.scss';
 import fonts from 'src/styles/fonts.module.scss';
 import layout from 'src/styles/layout.module.scss';
+import { toAbsoluteTime } from 'src/utilities/time';
 
 import styles from './MessageEntry.module.scss';
 
@@ -27,6 +29,10 @@ export default function MessageEntry({
   );
 
   const fromSelf = message?.senderId === activeUserId;
+  const datetime = useMemo(
+    () => (message && clusterEnd ? toAbsoluteTime(message.sentAt) : undefined),
+    [message, clusterEnd]
+  );
 
   if (!message) {
     return null;
@@ -65,7 +71,7 @@ export default function MessageEntry({
             layout.mediumMarginLeft
           )}
         >
-          10:00 AM, Nov 11
+          {datetime}
         </div>
       )}
     </div>

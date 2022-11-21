@@ -1,9 +1,12 @@
 import classNames from 'classnames';
+import moment from 'moment';
+import { useMemo } from 'react';
 
 import Button from 'src/components/core/button';
 import { useLiveChatsByUserId, useLiveMessagesById } from 'src/hooks/messenger';
 import { useLiveUsersById } from 'src/hooks/profiles';
 import { useAppSelector } from 'src/hooks/store';
+import { selectMessageEntities } from 'src/store/messenger/messages';
 import { selectActiveUserId } from 'src/store/profiles/users';
 import fonts from 'src/styles/fonts.module.scss';
 import layout from 'src/styles/layout.module.scss';
@@ -26,12 +29,29 @@ export default function ChatList({ selectedChatId, setSelectedChatId }: Props) {
   const chats = useLiveChatsByUserId(activeUserId);
 
   // The selected chat will be fetched/subscribed to in the chat view
-  const unselectedChats = chats.filter((c) => c.chatId !== selectedChatId);
+  const unselectedChats = useMemo(
+    () => chats.filter((c) => c.chatId !== selectedChatId),
+    [chats, selectedChatId]
+  );
+
   useLiveMessagesById(unselectedChats.map((c) => c.lastMessageId));
   useLiveUsersById(
     Array.from(
       new Set(unselectedChats.flatMap((c) => c.participantIds))
     ).filter((id) => id !== activeUserId)
+  );
+
+  // We need the messages to sort the chats by date,
+  // but the fetching/subscribing is handled above so just use a basic selector
+  const messages = useAppSelector(selectMessageEntities);
+  const sortedChats = useMemo(
+    () =>
+      [...chats].sort((a, b) =>
+        moment(messages[b.lastMessageId]?.sentAt).diff(
+          messages[a.lastMessageId]?.sentAt
+        )
+      ),
+    [chats, messages]
   );
 
   return (
@@ -47,7 +67,7 @@ export default function ChatList({ selectedChatId, setSelectedChatId }: Props) {
         />
       </div>
       <div className={styles.list}>
-        {chats.map((chat) => (
+        {sortedChats.map((chat) => (
           <ChatEntry
             key={chat.chatId}
             chatId={chat.chatId}

@@ -4,6 +4,9 @@ import {
   createEntityAdapter,
   createSelector,
   createSlice,
+  isFulfilled,
+  isPending,
+  isRejected,
 } from '@reduxjs/toolkit';
 
 import {
@@ -40,6 +43,27 @@ export const sendMessageUpdates = createAsyncThunk(
   async (messages: MessageUpdateDTO[]) => await patchMessages(messages)
 );
 
+const isPendingAction = isPending(
+  fetchMessagesById,
+  fetchMessagesByChatId,
+  sendNewMessage,
+  sendMessageUpdates
+);
+
+const isFulfilledAction = isFulfilled(
+  fetchMessagesById,
+  fetchMessagesByChatId,
+  sendNewMessage,
+  sendMessageUpdates
+);
+
+const isRejectedAction = isRejected(
+  fetchMessagesById,
+  fetchMessagesByChatId,
+  sendNewMessage,
+  sendMessageUpdates
+);
+
 const messageAdapter = createEntityAdapter<Message>({
   selectId: (message) => message.messageId,
 });
@@ -59,24 +83,10 @@ export const messageSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchMessagesById.pending, (state) => {
-        state.status = 'loading';
-      })
       .addCase(fetchMessagesById.fulfilled, (state, action) => {
-        state.status = 'loaded';
         messageAdapter.upsertMany(state, action.payload);
       })
-      .addCase(fetchMessagesById.rejected, (state) => {
-        state.status = 'failed';
-      })
-      .addCase(fetchMessagesByChatId.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchMessagesByChatId.rejected, (state) => {
-        state.status = 'failed';
-      })
       .addCase(fetchMessagesByChatId.fulfilled, (state, action) => {
-        state.status = 'loaded';
         state.lastChatId = action.meta.arg;
         messageAdapter.upsertMany(state, action.payload);
       })
@@ -91,6 +101,15 @@ export const messageSlice = createSlice({
             changes: u,
           }))
         );
+      })
+      .addMatcher(isPendingAction, (state) => {
+        state.status = 'loading';
+      })
+      .addMatcher(isFulfilledAction, (state) => {
+        state.status = 'loaded';
+      })
+      .addMatcher(isRejectedAction, (state) => {
+        state.status = 'failed';
       });
   },
 });
@@ -102,8 +121,11 @@ export const selectMessageStatus = (state: RootState) => state.messages.status;
 export const selectLastChatIdForMessages = (state: RootState) =>
   state.messages.lastChatId;
 
-export const { selectAll: selectAllMessages, selectById: selectMessageById } =
-  messageAdapter.getSelectors<RootState>((state) => state.messages);
+export const {
+  selectAll: selectAllMessages,
+  selectById: selectMessageById,
+  selectEntities: selectMessageEntities,
+} = messageAdapter.getSelectors<RootState>((state) => state.messages);
 
 export const selectMessagesByChatId = createSelector(
   [selectAllMessages, (_, chatId: string) => chatId],
@@ -111,11 +133,12 @@ export const selectMessagesByChatId = createSelector(
 );
 
 export const selectMessagesById = createSelector(
-  [selectAllMessages, (_, messageIds: string[]) => messageIds],
-  (messages, messageIds) => {
-    const messageIdSet = new Set(messageIds);
-    return messages.filter((m) => messageIdSet.has(m.messageId));
-  }
+  [selectMessageEntities, (_, messageIds: string[]) => messageIds],
+  (messages, messageIds) =>
+    messageIds.flatMap((id) => {
+      const message = messages[id];
+      return message ? [message] : [];
+    })
 );
 
 export default messageSlice.reducer;

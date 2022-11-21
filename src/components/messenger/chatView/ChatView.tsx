@@ -1,13 +1,17 @@
 import classNames from 'classnames';
 import moment from 'moment';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Button from 'src/components/core/button';
 import Input from 'src/components/core/input';
 import { useLiveMessagesByChatId } from 'src/hooks/messenger';
 import { useLiveUsersById } from 'src/hooks/profiles';
-import { useAppSelector } from 'src/hooks/store';
+import { useAppDispatch, useAppSelector } from 'src/hooks/store';
 import { selectChatById } from 'src/store/messenger/chats';
+import {
+  selectLastChatIdForMessages,
+  sendMessageUpdates,
+} from 'src/store/messenger/messages';
 import { selectActiveUserId } from 'src/store/profiles/users';
 import fonts from 'src/styles/fonts.module.scss';
 import layout from 'src/styles/layout.module.scss';
@@ -20,9 +24,9 @@ interface Props {
 }
 
 export default function ChatView({ selectedChatId }: Props) {
-  const [pendingMessage, setPendingMessage] = useState<string>('');
-  const activeUserId = useAppSelector(selectActiveUserId);
+  const [pendingMessage, setPendingMessage] = useState('');
 
+  const activeUserId = useAppSelector(selectActiveUserId);
   const chat = useAppSelector((state) => selectChatById(state, selectedChatId));
 
   const otherUserIds = chat?.participantIds.filter((id) => id !== activeUserId);
@@ -38,6 +42,32 @@ export default function ChatView({ selectedChatId }: Props) {
     () => [...messages].sort((a, b) => moment(b.sentAt).diff(moment(a.sentAt))),
     [messages]
   );
+
+  const dispatch = useAppDispatch();
+  const lastChatId = useAppSelector(selectLastChatIdForMessages);
+
+  useEffect(() => {
+    if (lastChatId !== selectedChatId) {
+      return;
+    }
+
+    const unreadMessages = messages.filter(
+      (m) => !m.readBy.includes(activeUserId)
+    );
+
+    if (!unreadMessages.length) {
+      return;
+    }
+
+    dispatch(
+      sendMessageUpdates(
+        unreadMessages.map((m) => ({
+          messageId: m.messageId,
+          readBy: [...m.readBy, activeUserId],
+        }))
+      )
+    );
+  }, [messages, lastChatId, activeUserId]);
 
   return (
     <div className={styles.container}>

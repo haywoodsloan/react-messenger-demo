@@ -29,7 +29,8 @@ export default function Avatar({ userIds }: Props) {
         styles.container,
         colors.fillSecondary,
         colors.textTertiary,
-        fonts.largeSize
+        fonts.largeSize,
+        fonts.semiBoldStyle
       )}
       aria-hidden="true"
     >

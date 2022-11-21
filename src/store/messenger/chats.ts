@@ -4,6 +4,9 @@ import {
   createEntityAdapter,
   createSelector,
   createSlice,
+  isFulfilled,
+  isPending,
+  isRejected,
 } from '@reduxjs/toolkit';
 
 import { getChatsByUserId, patchChat } from 'src/api/messenger';
@@ -25,6 +28,10 @@ export const sendChatUpdate = createAsyncThunk(
   async (chat: ChatUpdateDTO) => await patchChat(chat)
 );
 
+const isPendingAction = isPending(fetchChatsByUserId, sendChatUpdate);
+const isFulfilledAction = isFulfilled(fetchChatsByUserId, sendChatUpdate);
+const isRejectedAction = isRejected(fetchChatsByUserId, sendChatUpdate);
+
 const chatAdapter = createEntityAdapter<Chat>({
   selectId: (chat) => chat.chatId,
 });
@@ -44,22 +51,24 @@ export const chatSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchChatsByUserId.pending, (state) => {
-        state.status = 'loading';
-      })
       .addCase(fetchChatsByUserId.fulfilled, (state, action) => {
-        state.status = 'loaded';
         state.lastUserId = action.meta.arg;
         chatAdapter.upsertMany(state, action.payload);
-      })
-      .addCase(fetchChatsByUserId.rejected, (state) => {
-        state.status = 'failed';
       })
       .addCase(sendChatUpdate.fulfilled, (state, action) => {
         chatAdapter.updateOne(state, {
           id: action.payload.chatId,
           changes: action.payload,
         });
+      })
+      .addMatcher(isPendingAction, (state) => {
+        state.status = 'loading';
+      })
+      .addMatcher(isFulfilledAction, (state) => {
+        state.status = 'loaded';
+      })
+      .addMatcher(isRejectedAction, (state) => {
+        state.status = 'failed';
       });
   },
 });

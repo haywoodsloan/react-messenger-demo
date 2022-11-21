@@ -37,7 +37,7 @@ export function getChatsByUserId(userId: string) {
         seedChats(userId);
       }
 
-      resolve(mockChats);
+      resolve(JSON.parse(JSON.stringify(mockChats)));
     }, mockDelay);
   });
 }
@@ -56,7 +56,7 @@ export function patchChat(updatedChat: ChatUpdateDTO) {
       }
 
       Object.assign(existingChat, updatedChat);
-      resolve(updatedChat);
+      resolve(JSON.parse(JSON.stringify(updatedChat)));
     }, mockDelay);
   });
 }
@@ -80,7 +80,7 @@ export function patchMessages(updatedMessages: MessageUpdateDTO[]) {
 
         Object.assign(existingMessage, updatedMessage);
       }
-      resolve(updatedMessages);
+      resolve(JSON.parse(JSON.stringify(updatedMessages)));
     }, mockDelay);
   });
 }
@@ -96,7 +96,11 @@ export function getUsersById(userIds: string[]) {
       }
 
       const userIdSet = new Set(userIds);
-      resolve(mockUsers.filter((u) => userIdSet.has(u.userId)));
+      resolve(
+        JSON.parse(
+          JSON.stringify(mockUsers.filter((u) => userIdSet.has(u.userId)))
+        )
+      );
     }, mockDelay);
   });
 }
@@ -112,7 +116,13 @@ export function getMessagesById(messageIds: string[]) {
       }
 
       const messageIdSet = new Set(messageIds);
-      resolve(mockMessages.filter((m) => messageIdSet.has(m.messageId)));
+      resolve(
+        JSON.parse(
+          JSON.stringify(
+            mockMessages.filter((m) => messageIdSet.has(m.messageId))
+          )
+        )
+      );
     }, mockDelay);
   });
 }
@@ -140,7 +150,11 @@ export function getMessagesByChatId(chatId: string) {
         seedChatHistory(chat);
       }
 
-      resolve(mockMessages.filter((m) => m.chatId === chatId));
+      resolve(
+        JSON.parse(
+          JSON.stringify(mockMessages.filter((m) => m.chatId === chatId))
+        )
+      );
     }, mockDelay);
   });
 }
@@ -164,7 +178,7 @@ export function postMessage(message: MessageAddDTO) {
 
       chat.lastMessageId = response.messageId;
       mockMessages.push(response);
-      resolve(response);
+      resolve(JSON.parse(JSON.stringify(response)));
     }, mockDelay);
   });
 }
@@ -204,34 +218,35 @@ function seedChats(userId: string) {
 }
 
 function seedChatHistory(chat: Chat) {
-  const oldestDatetime = mockMessages.reduce((datetime, message) => {
-    if (message.chatId === chat.chatId) {
-      const messageDateTime = moment(message.sentAt);
-      if (messageDateTime.isBefore(datetime)) {
-        return messageDateTime;
-      }
-    }
-    return datetime;
-  }, moment());
+  const oldestMessage = mockMessages
+    .filter((m) => m.chatId === chat.chatId)
+    .reduce((oldest, next) =>
+      moment(next.sentAt).isBefore(oldest.sentAt) ? next : oldest
+    );
 
-  // TODO start the first cluster with the latest message sender
+  const datetime = moment(oldestMessage.sentAt);
+  let senderId = oldestMessage.senderId;
+  let messageCount = randomInt(1, 2);
 
-  const clusterCount = randomInt(1, 4);
+  const clusterCount = randomInt(4, 10);
   for (let i = 0; i < clusterCount; i++) {
-    oldestDatetime.subtract(randomInt(1, 3), 'days');
-    const senderId = randomSample(chat.participantIds);
-    const messageCount = randomInt(1, 4);
-
     for (let j = 0; j < messageCount; j++) {
+      datetime.subtract(1, 'minute');
       mockMessages.push({
         chatId: chat.chatId,
         content: randomMessageText(),
         readBy: chat.participantIds,
         messageId: randomUUID(),
         senderId,
-        sentAt: oldestDatetime.toJSON(),
+        sentAt: datetime.toJSON(),
       });
-      oldestDatetime.subtract(1, 'minute');
     }
+
+    messageCount = randomInt(1, 3);
+    senderId = randomSample(chat.participantIds, senderId);
+    datetime
+      .subtract(randomInt(0, 3), 'days')
+      .subtract(randomInt(0, 6), 'hours')
+      .subtract(randomInt(0, 30), 'minutes');
   }
 }

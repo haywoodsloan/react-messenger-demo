@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { MouseEventHandler, useMemo } from 'react';
+import { MouseEventHandler, useEffect, useMemo, useState } from 'react';
 
 import Avatar from 'src/components/core/avatar';
 import { useAppSelector } from 'src/hooks/store';
@@ -13,6 +13,7 @@ import {
 import colors from 'src/styles/colors.module.scss';
 import fonts from 'src/styles/fonts.module.scss';
 import layout from 'src/styles/layout.module.scss';
+import { toRelativeTime } from 'src/utilities/time';
 
 import styles from './ChatEntry.module.scss';
 
@@ -24,12 +25,25 @@ interface Props {
 
 export default function ChatEntry({ chatId, isSelected, onClick }: Props) {
   const chat = useAppSelector((state) => selectChatById(state, chatId));
-  const activeUserId = useAppSelector(selectActiveUserId);
 
   const message = useAppSelector((state) =>
     chat ? selectMessageById(state, chat.lastMessageId) : undefined
   );
 
+  // Update the datetime display each minute
+  const [datetime, setDatetime] = useState('');
+  useEffect(() => {
+    if (message) {
+      setDatetime(toRelativeTime(message.sentAt));
+      const interval = setInterval(
+        () => setDatetime(toRelativeTime(message.sentAt)),
+        60000 // update every minute
+      );
+      return () => clearInterval(interval);
+    }
+  }, [message]);
+
+  const activeUserId = useAppSelector(selectActiveUserId);
   const otherUserIds = chat?.participantIds.filter((id) => id !== activeUserId);
   const otherUsers = useAppSelector((state) =>
     otherUserIds ? selectUsersById(state, otherUserIds) : undefined
@@ -93,12 +107,12 @@ export default function ChatEntry({ chatId, isSelected, onClick }: Props) {
               layout.mediumMarginRight,
               fonts.smallSize,
               {
-                [fonts.semiBoldStyle]: isUnread,
+                [fonts.boldStyle]: isUnread,
                 [colors.textSecondary]: !isUnread,
               }
             )}
           >
-            Fri
+            {datetime}
           </span>
         </div>
         <div
