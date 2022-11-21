@@ -1,6 +1,12 @@
 import classNames from 'classnames';
 import moment from 'moment';
-import { useEffect, useMemo, useState } from 'react';
+import {
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import Button from 'src/components/core/button';
 import Input from 'src/components/core/input';
@@ -11,6 +17,7 @@ import { selectChatById } from 'src/store/messenger/chats';
 import {
   selectLastChatIdForMessages,
   sendMessageUpdates,
+  sendNewMessage,
 } from 'src/store/messenger/messages';
 import { selectActiveUserId } from 'src/store/profiles/users';
 import fonts from 'src/styles/fonts.module.scss';
@@ -67,7 +74,21 @@ export default function ChatView({ selectedChatId }: Props) {
         }))
       )
     );
-  }, [messages, lastChatId, activeUserId]);
+  }, [messages, lastChatId, activeUserId, dispatch]);
+
+  const onSubmit = useCallback<
+    MouseEventHandler<HTMLButtonElement>
+  >(async () => {
+    await dispatch(
+      sendNewMessage({
+        chatId: selectedChatId,
+        content: pendingMessage,
+        senderId: activeUserId,
+      })
+    );
+
+    setPendingMessage('');
+  }, [selectedChatId, pendingMessage, activeUserId]);
 
   return (
     <div className={styles.container}>
@@ -87,18 +108,22 @@ export default function ChatView({ selectedChatId }: Props) {
         )}
       >
         <div className={styles.main}>
-          {sortedMessages.map((message, idx) => (
-            <MessageEntry
-              key={message.messageId}
-              messageId={message.messageId}
-              clusterStart={
-                sortedMessages[idx + 1]?.senderId !== message.senderId
-              }
-              clusterEnd={
-                sortedMessages[idx - 1]?.senderId !== message.senderId
-              }
-            />
-          ))}
+          {useMemo(
+            () =>
+              sortedMessages.map((message, idx) => (
+                <MessageEntry
+                  key={message.messageId}
+                  messageId={message.messageId}
+                  clusterStart={
+                    sortedMessages[idx + 1]?.senderId !== message.senderId
+                  }
+                  clusterEnd={
+                    sortedMessages[idx - 1]?.senderId !== message.senderId
+                  }
+                />
+              )),
+            [sortedMessages]
+          )}
         </div>
       </div>
       <div className={classNames(styles.footer, layout.largePadding)}>
@@ -108,7 +133,7 @@ export default function ChatView({ selectedChatId }: Props) {
           value={pendingMessage}
           onChange={(e) => setPendingMessage(e.target.value)}
         />
-        <Button text="➤ Send" />
+        <Button text="➤ Send" onClick={onSubmit} />
       </div>
     </div>
   );

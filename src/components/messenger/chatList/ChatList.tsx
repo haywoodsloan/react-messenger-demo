@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import moment from 'moment';
-import { useMemo } from 'react';
+import { MouseEventHandler, useCallback, useMemo } from 'react';
 
 import Button from 'src/components/core/button';
 import { useLiveChatsByUserId, useLiveMessagesById } from 'src/hooks/messenger';
@@ -20,11 +20,6 @@ interface Props {
 }
 
 export default function ChatList({ selectedChatId, setSelectedChatId }: Props) {
-  const onNewMessage: React.MouseEventHandler<HTMLButtonElement> = (event) => {
-    alert('To unlock starting new chats please upgrade to premium for $99/mo!');
-    event.currentTarget.blur();
-  };
-
   const activeUserId = useAppSelector(selectActiveUserId);
   const chats = useLiveChatsByUserId(activeUserId);
 
@@ -54,6 +49,16 @@ export default function ChatList({ selectedChatId, setSelectedChatId }: Props) {
     [chats, messages]
   );
 
+  const onNewMessage = useCallback<MouseEventHandler<HTMLButtonElement>>(
+    (event) => {
+      event.currentTarget.blur();
+      alert(
+        'To unlock starting new chats please upgrade to premium for $99/mo!'
+      );
+    },
+    []
+  );
+
   return (
     <div className={styles.container}>
       <div className={classNames(styles.banner, layout.largePaddingLeft)}>
@@ -67,14 +72,18 @@ export default function ChatList({ selectedChatId, setSelectedChatId }: Props) {
         />
       </div>
       <div className={styles.list}>
-        {sortedChats.map((chat) => (
-          <ChatEntry
-            key={chat.chatId}
-            chatId={chat.chatId}
-            isSelected={selectedChatId === chat.chatId}
-            onClick={() => setSelectedChatId(chat.chatId)}
-          />
-        ))}
+        {useMemo(
+          () =>
+            sortedChats.map((chat) => (
+              <ChatEntry
+                key={chat.chatId}
+                chatId={chat.chatId}
+                isSelected={selectedChatId === chat.chatId}
+                onClick={() => setSelectedChatId(chat.chatId)}
+              />
+            )),
+          [sortedChats, selectedChatId]
+        )}
       </div>
     </div>
   );
