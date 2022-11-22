@@ -2,7 +2,9 @@ import classNames from 'classnames';
 import getLineHeight from 'line-height';
 import {
   ChangeEventHandler,
+  forwardRef,
   useEffect,
+  useImperativeHandle,
   useLayoutEffect,
   useRef,
   useState,
@@ -13,6 +15,8 @@ import layout from 'src/styles/layout.module.scss';
 
 import styles from './Input.module.scss';
 
+type ParentRef = HTMLTextAreaElement | null;
+
 interface Props {
   className?: string;
   maxLines?: number;
@@ -21,15 +25,20 @@ interface Props {
   onChange: ChangeEventHandler<HTMLTextAreaElement>;
 }
 
-export default function Input({
-  className,
-  placeholder,
-  value,
-  onChange,
-  maxLines = 5,
-}: Props) {
+export default forwardRef<ParentRef, Props>(function Input(
+  { className, placeholder, value, onChange, maxLines = 5 },
+  parentRef
+) {
   const containerRef = useRef<HTMLDivElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Because we need a local reference to the textarea too
+  // We use an imperative handle to share the local ref with the parent
+  useImperativeHandle<ParentRef, ParentRef>(
+    parentRef,
+    () => textAreaRef.current,
+    [parentRef]
+  );
 
   const [lineHeight, setLineHeight] = useState(0);
   const [verticalPadding, setVerticalPadding] = useState(0);
@@ -98,4 +107,4 @@ export default function Input({
       />
     </div>
   );
-}
+});

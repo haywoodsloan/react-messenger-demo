@@ -5,6 +5,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 
@@ -76,6 +77,7 @@ export default function ChatView({ selectedChatId }: Props) {
     );
   }, [messages, lastChatId, activeUserId, dispatch]);
 
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const onSubmit = useCallback<
     MouseEventHandler<HTMLButtonElement>
   >(async () => {
@@ -88,6 +90,7 @@ export default function ChatView({ selectedChatId }: Props) {
     );
 
     setPendingMessage('');
+    inputRef.current?.focus();
   }, [selectedChatId, pendingMessage, activeUserId]);
 
   return (
@@ -128,6 +131,7 @@ export default function ChatView({ selectedChatId }: Props) {
       </div>
       <div className={classNames(styles.footer, layout.largePadding)}>
         <Input
+          ref={inputRef}
           className={classNames(layout.extraLargeMarginRight, styles.input)}
           placeholder="Type your message here"
           value={pendingMessage}
