@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import useResizeObserver from 'use-resize-observer';
 
 import colors from 'src/styles/colors.module.scss';
 import layout from 'src/styles/layout.module.scss';
@@ -66,6 +67,7 @@ export default forwardRef<ParentRef, Props>(function Input(
     };
   }, []);
 
+  const { width } = useResizeObserver({ ref: textAreaRef });
   useLayoutEffect(() => {
     if (textAreaRef.current) {
       textAreaRef.current.style.height = '0';
@@ -81,7 +83,7 @@ export default forwardRef<ParentRef, Props>(function Input(
         textAreaRef.current.style.height = `${lineCount * lineHeight}px`;
       }
     }
-  }, [value, lineHeight, verticalPadding]);
+  }, [value, width, lineHeight, verticalPadding]);
 
   return (
     <div
