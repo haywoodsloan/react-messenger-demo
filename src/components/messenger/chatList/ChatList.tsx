@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import moment from 'moment';
-import { MouseEventHandler, useCallback, useMemo } from 'react';
+import { MouseEvent, useCallback, useMemo } from 'react';
 
 import Button from 'src/components/core/button';
 import { useLiveChatsByUserId, useLiveMessagesById } from 'src/hooks/messenger';
@@ -49,15 +49,10 @@ export default function ChatList({ selectedChatId, setSelectedChatId }: Props) {
     [chats, messages]
   );
 
-  const onNewMessage = useCallback<MouseEventHandler<HTMLButtonElement>>(
-    (event) => {
-      event.currentTarget.blur();
-      alert(
-        'To unlock starting new chats please upgrade to premium for $99/mo!'
-      );
-    },
-    []
-  );
+  const onNewMessage = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+    event.currentTarget.blur();
+    alert('To unlock starting new chats please upgrade to premium for $99/mo!');
+  }, []);
 
   return (
     <div className={styles.container}>

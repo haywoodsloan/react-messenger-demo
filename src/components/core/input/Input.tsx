@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import getLineHeight from 'line-height';
 import {
   ChangeEventHandler,
+  KeyboardEventHandler,
   forwardRef,
   useEffect,
   useImperativeHandle,
@@ -24,10 +25,11 @@ interface Props {
   placeholder?: string;
   value: string;
   onChange: ChangeEventHandler<HTMLTextAreaElement>;
+  onKeyDown?: KeyboardEventHandler<HTMLTextAreaElement>;
 }
 
 export default forwardRef<ParentRef, Props>(function Input(
-  { className, placeholder, value, onChange, maxLines = 5 },
+  { className, placeholder, value, onChange, maxLines = 5, onKeyDown },
   parentRef
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -44,6 +46,8 @@ export default forwardRef<ParentRef, Props>(function Input(
   const [lineHeight, setLineHeight] = useState(0);
   const [verticalPadding, setVerticalPadding] = useState(0);
 
+  // Get the initial line height and vertical padding on mount
+  // Listen for font loading events to double check if line height changed
   useEffect(() => {
     if (textAreaRef.current) {
       const computedStyles = getComputedStyle(textAreaRef.current);
@@ -67,6 +71,8 @@ export default forwardRef<ParentRef, Props>(function Input(
     };
   }, []);
 
+  // Adjust the height of the text area to fit the
+  // current scroll height up to the max number of lines
   const { width } = useResizeObserver({ ref: textAreaRef });
   useLayoutEffect(() => {
     if (textAreaRef.current) {
@@ -105,6 +111,7 @@ export default forwardRef<ParentRef, Props>(function Input(
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        onKeyDown={onKeyDown}
         rows={1}
       />
     </div>

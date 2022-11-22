@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import moment from 'moment';
 import {
-  MouseEventHandler,
+  KeyboardEvent,
   useCallback,
   useEffect,
   useMemo,
@@ -54,6 +54,7 @@ export default function ChatView({ selectedChatId }: Props) {
   const dispatch = useAppDispatch();
   const lastChatId = useAppSelector(selectLastChatIdForMessages);
 
+  // Mark unread messages as read once fully loaded
   useEffect(() => {
     if (lastChatId !== selectedChatId) {
       return;
@@ -78,9 +79,7 @@ export default function ChatView({ selectedChatId }: Props) {
   }, [messages, lastChatId, activeUserId, dispatch]);
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const onSubmit = useCallback<
-    MouseEventHandler<HTMLButtonElement>
-  >(async () => {
+  const sendMessage = useCallback(async () => {
     await dispatch(
       sendNewMessage({
         chatId: selectedChatId,
@@ -92,6 +91,17 @@ export default function ChatView({ selectedChatId }: Props) {
     setPendingMessage('');
     inputRef.current?.focus();
   }, [selectedChatId, pendingMessage, activeUserId]);
+
+  // Listen for enter key and send message unless shift is held
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLTextAreaElement>) => {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+      }
+    },
+    [sendMessage]
+  );
 
   return (
     <div className={styles.container}>
@@ -136,8 +146,9 @@ export default function ChatView({ selectedChatId }: Props) {
           placeholder="Type your message here"
           value={pendingMessage}
           onChange={(e) => setPendingMessage(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
-        <Button text="➤ Send" onClick={onSubmit} />
+        <Button text="➤ Send" onClick={sendMessage} />
       </div>
     </div>
   );
