@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import { MouseEventHandler, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import Avatar from 'src/components/core/avatar';
 import { useAppSelector } from 'src/hooks/store';
@@ -20,10 +21,9 @@ import styles from './ChatEntry.module.scss';
 interface Props {
   chatId: string;
   isSelected: boolean;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
-export default function ChatEntry({ chatId, isSelected, onClick }: Props) {
+export default function ChatEntry({ chatId, isSelected }: Props) {
   const chat = useAppSelector((state) => selectChatById(state, chatId));
 
   const message = useAppSelector((state) =>
@@ -80,11 +80,11 @@ export default function ChatEntry({ chatId, isSelected, onClick }: Props) {
   }
 
   return (
-    <button
+    <Link
       className={classNames(styles.container, {
         [styles.selected]: isSelected,
       })}
-      onClick={onClick}
+      to={`chat/${chatId}`}
     >
       <div className={classNames(styles.avatar, layout.largeMarginHorizontal)}>
         <Avatar userIds={otherUserIds ?? []} />
@@ -128,6 +128,6 @@ export default function ChatEntry({ chatId, isSelected, onClick }: Props) {
           {messagePreview}
         </div>
       </div>
-    </button>
+    </Link>
   );
 }

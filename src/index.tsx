@@ -1,12 +1,11 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
-import { Metric } from 'web-vitals';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-import App from './App';
 import './index.scss';
 import reportWebVitals from './reportWebVitals';
+import routes from './routes';
 import { store } from './store';
 
 const container = document.getElementById('root');
@@ -15,21 +14,19 @@ if (!container) {
   throw new Error('Failed to find root container');
 }
 
+const router = createBrowserRouter(routes);
 const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <RouterProvider router={router} />
     </Provider>
   </React.StrictMode>
 );
 
-const sendAnalytics = (metric: Metric) => {
+reportWebVitals((metric) => {
   // Eventually this should send the data to an analytics service
   // like App Insights, for now just log to the console
   console.log(metric);
-};
-reportWebVitals(sendAnalytics);
+});

@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { useParams } from 'react-router-dom';
 
 import Button from 'src/components/core/button';
 import Input from 'src/components/core/input';
@@ -27,15 +28,18 @@ import layout from 'src/styles/layout.module.scss';
 import styles from './ChatView.module.scss';
 import MessageEntry from './messageEntry';
 
-interface Props {
-  selectedChatId: string;
-}
+type RouteParams = {
+  chatId: string;
+};
 
-export default function ChatView({ selectedChatId }: Props) {
+export default function ChatView() {
   const [pendingMessage, setPendingMessage] = useState('');
+  const { chatId } = useParams<RouteParams>();
 
   const activeUserId = useAppSelector(selectActiveUserId);
-  const chat = useAppSelector((state) => selectChatById(state, selectedChatId));
+  const chat = useAppSelector((state) =>
+    chatId ? selectChatById(state, chatId) : undefined
+  );
 
   const otherUserIds = chat?.participantIds.filter((id) => id !== activeUserId);
   const otherUsers = useLiveUsersById(otherUserIds ?? []);
@@ -45,7 +49,7 @@ export default function ChatView({ selectedChatId }: Props) {
     [otherUsers]
   );
 
-  const messages = useLiveMessagesByChatId(selectedChatId);
+  const messages = useLiveMessagesByChatId(chatId);
   const sortedMessages = useMemo(
     () => [...messages].sort((a, b) => moment(b.sentAt).diff(moment(a.sentAt))),
     [messages]
@@ -56,7 +60,7 @@ export default function ChatView({ selectedChatId }: Props) {
 
   // Mark unread messages as read once fully loaded
   useEffect(() => {
-    if (lastChatId !== selectedChatId) {
+    if (!chatId || lastChatId !== chatId) {
       return;
     }
 
@@ -80,9 +84,13 @@ export default function ChatView({ selectedChatId }: Props) {
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const sendMessage = useCallback(async () => {
+    if (!chatId) {
+      return;
+    }
+
     await dispatch(
       sendNewMessage({
-        chatId: selectedChatId,
+        chatId,
         content: pendingMessage,
         senderId: activeUserId,
       })
@@ -90,7 +98,7 @@ export default function ChatView({ selectedChatId }: Props) {
 
     setPendingMessage('');
     inputRef.current?.focus();
-  }, [selectedChatId, pendingMessage, activeUserId]);
+  }, [chatId, pendingMessage, activeUserId]);
 
   // Listen for enter key and send message unless shift is held
   const handleKeyDown = useCallback(

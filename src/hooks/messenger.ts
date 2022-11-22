@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   fetchChatsByUserId,
@@ -17,26 +18,28 @@ import {
 
 import { useAppDispatch, useAppSelector } from './store';
 
-export function useChatsByUserId(userId: string) {
+export function useChatsByUserId(userId?: string) {
   const dispatch = useAppDispatch();
   const chatStatus = useAppSelector(selectChatStatus);
   const lastUserId = useAppSelector(selectLastUserIdForChats);
 
   useEffect(() => {
-    if (chatStatus !== 'loading' && lastUserId !== userId) {
+    if (chatStatus !== 'loading' && userId && lastUserId !== userId) {
       dispatch(fetchChatsByUserId(userId));
     }
   }, [userId, lastUserId, chatStatus, dispatch]);
 
-  return useAppSelector((state) => selectChatsByUserId(state, userId));
+  return useAppSelector((state) =>
+    userId ? selectChatsByUserId(state, userId) : []
+  );
 }
 
-export function useLiveChatsByUserId(userId: string) {
+export function useLiveChatsByUserId(userId?: string) {
   const dispatch = useAppDispatch();
   const chatStatus = useAppSelector(selectChatStatus);
 
   useEffect(() => {
-    if (chatStatus !== 'loading') {
+    if (chatStatus !== 'loading' && userId) {
       // TODO subscribe to a realtime API
     }
   }, [userId, chatStatus, dispatch]);
@@ -48,11 +51,11 @@ export function useMessagesById(messageIds: string[]) {
   const dispatch = useAppDispatch();
   const messageStatus = useAppSelector(selectMessageStatus);
   const messages = useAppSelector((state) =>
-    selectMessagesById(state, messageIds)
+    messageIds.length ? selectMessagesById(state, messageIds) : []
   );
 
   useEffect(() => {
-    if (messageStatus !== 'loading') {
+    if (messageStatus !== 'loading' && messageIds.length) {
       const existingMessageIds = new Set(messages.map((m) => m.messageId));
       const missingMessageIds = messageIds.filter(
         (id) => !existingMessageIds.has(id)
@@ -72,7 +75,7 @@ export function useLiveMessagesById(messageIds: string[]) {
   const messageStatus = useAppSelector(selectMessageStatus);
 
   useEffect(() => {
-    if (messageStatus !== 'loading') {
+    if (messageStatus !== 'loading' && messageIds.length) {
       // TODO subscribe to a realtime API
     }
   }, [messageIds, messageStatus, dispatch]);
@@ -80,26 +83,33 @@ export function useLiveMessagesById(messageIds: string[]) {
   return useMessagesById(messageIds);
 }
 
-export function useMessagesByChatId(chatId: string) {
+export function useMessagesByChatId(chatId?: string) {
   const dispatch = useAppDispatch();
   const messageStatus = useAppSelector(selectMessageStatus);
   const lastChatId = useAppSelector(selectLastChatIdForMessages);
+  const navigate = useNavigate();
 
+  // Messages are only requested by chat id in the chat view component
+  // If we fail to fetch assume an invalid chat was specified and redirect to the base messenger
   useEffect(() => {
-    if (messageStatus !== 'loading' && lastChatId !== chatId) {
-      dispatch(fetchMessagesByChatId(chatId));
+    if (messageStatus !== 'loading' && chatId && lastChatId !== chatId) {
+      dispatch(fetchMessagesByChatId(chatId))
+        .unwrap()
+        .catch(() => navigate('/messenger'));
     }
   }, [chatId, lastChatId, messageStatus, dispatch]);
 
-  return useAppSelector((state) => selectMessagesByChatId(state, chatId));
+  return useAppSelector((state) =>
+    chatId ? selectMessagesByChatId(state, chatId) : []
+  );
 }
 
-export function useLiveMessagesByChatId(chatId: string) {
+export function useLiveMessagesByChatId(chatId?: string) {
   const dispatch = useAppDispatch();
   const messageStatus = useAppSelector(selectMessageStatus);
 
   useEffect(() => {
-    if (messageStatus !== 'loading') {
+    if (messageStatus !== 'loading' && chatId) {
       // TODO subscribe to a realtime API
     }
   }, [dispatch, chatId, messageStatus]);

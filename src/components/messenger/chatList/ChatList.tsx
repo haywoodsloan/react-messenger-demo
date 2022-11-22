@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import moment from 'moment';
 import { MouseEvent, useCallback, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
 
 import Button from 'src/components/core/button';
 import { useLiveChatsByUserId, useLiveMessagesById } from 'src/hooks/messenger';
@@ -14,19 +15,20 @@ import layout from 'src/styles/layout.module.scss';
 import styles from './ChatList.module.scss';
 import ChatEntry from './chatEntry';
 
-interface Props {
-  selectedChatId: string;
-  setSelectedChatId: (id: string) => void;
-}
+type RouteParams = {
+  chatId: string;
+};
 
-export default function ChatList({ selectedChatId, setSelectedChatId }: Props) {
+export default function ChatList() {
+  const { chatId } = useParams<RouteParams>();
+
   const activeUserId = useAppSelector(selectActiveUserId);
   const chats = useLiveChatsByUserId(activeUserId);
 
   // The selected chat will be fetched/subscribed to in the chat view
   const unselectedChats = useMemo(
-    () => chats.filter((c) => c.chatId !== selectedChatId),
-    [chats, selectedChatId]
+    () => chats.filter((c) => c.chatId !== chatId),
+    [chats, chatId]
   );
 
   useLiveMessagesById(unselectedChats.map((c) => c.lastMessageId));
@@ -73,11 +75,10 @@ export default function ChatList({ selectedChatId, setSelectedChatId }: Props) {
               <ChatEntry
                 key={chat.chatId}
                 chatId={chat.chatId}
-                isSelected={selectedChatId === chat.chatId}
-                onClick={() => setSelectedChatId(chat.chatId)}
+                isSelected={chatId === chat.chatId}
               />
             )),
-          [sortedChats, selectedChatId]
+          [sortedChats, chatId]
         )}
       </div>
     </div>

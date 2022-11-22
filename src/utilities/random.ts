@@ -57,6 +57,14 @@ const sampleTexts = [
   "I'm going to visit my grandparents today",
   'What was the name of that show you recommended?',
   "What's your favorite dessert?",
+  'Can I borrow some flour?',
+  'I hope the weather will be nice tomorrow.',
+  'Do you know any card games?',
+  "I'm going to buy some flowers!",
+  'I saw a funny cat video the other day.',
+  'I think my phone is running out of battery.',
+  'When is your birthday?',
+  'Do you like hiking?',
 ];
 
 const sampleFirstNames = [

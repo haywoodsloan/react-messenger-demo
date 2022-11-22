@@ -1,16 +1,10 @@
 .container {
   display: flex;
-  width: 100%;
   height: 9rem;
-  box-sizing: content-box;
   align-items: center;
-  padding: 0;
-  border: none;
   background-color: transparent;
   color: inherit;
-  cursor: pointer;
-  font: inherit;
-  text-align: start;
+  text-decoration: none;
   transition: background-color 250ms;
 
   &:not(:last-child) {

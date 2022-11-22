@@ -52,13 +52,15 @@ export default function MessageEntry({
       {!fromSelf && (
         <div>{clusterEnd && <Avatar userIds={[message.senderId]} />}</div>
       )}
-      <div
-        className={classNames(styles.bubble, layout.largePadding, {
-          [styles.clusterEnd]: clusterEnd,
-          [styles.clusterStart]: clusterStart,
-        })}
-      >
-        {message.content}
+      <div>
+        <div
+          className={classNames(styles.bubble, layout.largePadding, {
+            [styles.clusterEnd]: clusterEnd,
+            [styles.clusterStart]: clusterStart,
+          })}
+        >
+          {message.content}
+        </div>
       </div>
       {!fromSelf && <div />}
       {clusterEnd && (

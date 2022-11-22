@@ -184,7 +184,7 @@ export function postMessage(message: MessageAddDTO) {
 }
 
 function seedChats(userId: string) {
-  const chatCount = randomInt(5, 15);
+  const chatCount = randomInt(10, 30);
 
   for (let i = 0; i < chatCount; i++) {
     const chatId = randomUUID();
@@ -206,7 +206,7 @@ function seedChats(userId: string) {
       messageId: lastMessageId,
       readBy,
       senderId,
-      sentAt: moment().subtract(randomInt(0, 2), 'days').toJSON(),
+      sentAt: moment().subtract(randomInt(0, 90), 'days').toJSON(),
     });
 
     mockUsers.push({
@@ -228,7 +228,7 @@ function seedChatHistory(chat: Chat) {
   let senderId = oldestMessage.senderId;
   let messageCount = randomInt(1, 2);
 
-  const clusterCount = randomInt(4, 10);
+  const clusterCount = randomInt(10, 30);
   for (let i = 0; i < clusterCount; i++) {
     for (let j = 0; j < messageCount; j++) {
       datetime.subtract(1, 'minute');
