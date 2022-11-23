@@ -123,7 +123,14 @@ export default function ChatView() {
           fonts.extraLargeSize
         )}
       >
-        <span className={layout.extraLargeMarginLeft}>{chatName}</span>
+        <span
+          className={classNames(
+            layout.extraLargeMarginHorizontal,
+            layout.truncateTextEllipsis
+          )}
+        >
+          {chatName}
+        </span>
       </div>
       <div
         className={classNames(

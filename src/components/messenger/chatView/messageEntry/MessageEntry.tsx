@@ -70,7 +70,7 @@ export default function MessageEntry({
             colors.textSecondary,
             fonts.extraSmallSize,
             layout.smallMarginTop,
-            layout.mediumMarginLeft
+            layout.mediumMarginHorizontal
           )}
         >
           {datetime}
