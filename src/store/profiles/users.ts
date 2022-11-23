@@ -41,14 +41,14 @@ export const userSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    upsertUser(state, action: PayloadAction<User>) {
-      userAdapter.upsertOne(state, action.payload);
+    setUser(state, action: PayloadAction<User>) {
+      userAdapter.setOne(state, action.payload);
     },
   },
   extraReducers(builder) {
     builder
       .addCase(fetchUsersById.fulfilled, (state, action) => {
-        userAdapter.upsertMany(state, action.payload);
+        userAdapter.setMany(state, action.payload);
       })
       .addMatcher(isPendingAction, (state) => {
         state.status = 'loading';
@@ -62,7 +62,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { upsertUser: updateUser } = userSlice.actions;
+export const { setUser } = userSlice.actions;
 
 export const selectUserStatus = (state: RootState) => state.users.status;
 

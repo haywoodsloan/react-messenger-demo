@@ -45,15 +45,27 @@ export const chatSlice = createSlice({
   name: 'chats',
   initialState,
   reducers: {
-    upsertChat(state, action: PayloadAction<Chat>) {
-      chatAdapter.upsertOne(state, action.payload);
+    setChat(state, action: PayloadAction<Chat>) {
+      chatAdapter.setOne(state, action.payload);
     },
   },
   extraReducers(builder) {
     builder
       .addCase(fetchChatsByUserId.fulfilled, (state, action) => {
         state.lastUserId = action.meta.arg;
-        chatAdapter.upsertMany(state, action.payload);
+        const idSet = new Set(action.payload.map((c) => c.chatId));
+
+        // Remove any chats the user was participant in
+        // but weren't returned from the new request
+        chatAdapter.setMany(state, action.payload);
+        chatAdapter.removeMany(
+          state,
+          state.ids.filter(
+            (id) =>
+              !idSet.has(id.toString()) &&
+              state.entities[id]?.participantIds.includes(action.meta.arg)
+          )
+        );
       })
       .addCase(sendChatUpdate.fulfilled, (state, action) => {
         chatAdapter.updateOne(state, {
@@ -73,7 +85,7 @@ export const chatSlice = createSlice({
   },
 });
 
-export const { upsertChat: updateChat } = chatSlice.actions;
+export const { setChat } = chatSlice.actions;
 
 export const selectChatStatus = (state: RootState) => state.chats.status;
 

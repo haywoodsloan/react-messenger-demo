@@ -77,18 +77,30 @@ export const messageSlice = createSlice({
   name: 'messages',
   initialState,
   reducers: {
-    upsertMessage(state, action: PayloadAction<Message>) {
-      messageAdapter.upsertOne(state, action.payload);
+    setMessage(state, action: PayloadAction<Message>) {
+      messageAdapter.setOne(state, action.payload);
     },
   },
   extraReducers(builder) {
     builder
       .addCase(fetchMessagesById.fulfilled, (state, action) => {
-        messageAdapter.upsertMany(state, action.payload);
+        messageAdapter.setMany(state, action.payload);
       })
       .addCase(fetchMessagesByChatId.fulfilled, (state, action) => {
         state.lastChatId = action.meta.arg;
-        messageAdapter.upsertMany(state, action.payload);
+        const idSet = new Set(action.payload.map((m) => m.messageId));
+
+        // Remove any messages from the specified chat
+        // that weren't returned from the new request
+        messageAdapter.setMany(state, action.payload);
+        messageAdapter.removeMany(
+          state,
+          state.ids.filter(
+            (id) =>
+              !idSet.has(id.toString()) &&
+              state.entities[id]?.chatId === action.meta.arg
+          )
+        );
       })
       .addCase(sendNewMessage.fulfilled, (state, action) => {
         messageAdapter.addOne(state, action.payload);
@@ -114,7 +126,7 @@ export const messageSlice = createSlice({
   },
 });
 
-export const { upsertMessage } = messageSlice.actions;
+export const { setMessage } = messageSlice.actions;
 
 export const selectMessageStatus = (state: RootState) => state.messages.status;
 
