@@ -8,7 +8,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Button from 'src/components/core/button';
 import Input from 'src/components/core/input';
@@ -49,7 +49,10 @@ export default function ChatView() {
     [otherUsers]
   );
 
-  const messages = useLiveMessagesByChatId(chatId);
+  const navigate = useNavigate();
+  const onError = useCallback(() => navigate('/messenger'), [navigate]);
+
+  const messages = useLiveMessagesByChatId(chatId, onError);
   const sortedMessages = useMemo(
     () => [...messages].sort((a, b) => moment(b.sentAt).diff(moment(a.sentAt))),
     [messages]

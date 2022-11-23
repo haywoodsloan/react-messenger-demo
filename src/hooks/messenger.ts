@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import {
   fetchChatsByUserId,
@@ -27,7 +26,7 @@ export function useChatsByUserId(userId?: string) {
     if (chatStatus !== 'loading' && userId && lastUserId !== userId) {
       dispatch(fetchChatsByUserId(userId));
     }
-  }, [userId, lastUserId, chatStatus, dispatch]);
+  }, [userId, lastUserId, chatStatus]);
 
   return useAppSelector((state) =>
     userId ? selectChatsByUserId(state, userId) : []
@@ -35,14 +34,14 @@ export function useChatsByUserId(userId?: string) {
 }
 
 export function useLiveChatsByUserId(userId?: string) {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const chatStatus = useAppSelector(selectChatStatus);
 
   useEffect(() => {
     if (chatStatus !== 'loading' && userId) {
       // TODO subscribe to a realtime API
     }
-  }, [userId, chatStatus, dispatch]);
+  }, [userId, chatStatus]);
 
   return useChatsByUserId(userId);
 }
@@ -65,54 +64,51 @@ export function useMessagesById(messageIds: string[]) {
         dispatch(fetchMessagesById(missingMessageIds));
       }
     }
-  }, [messageStatus, messageIds, messages, dispatch]);
+  }, [messageStatus, messageIds, messages]);
 
   return messages;
 }
 
 export function useLiveMessagesById(messageIds: string[]) {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const messageStatus = useAppSelector(selectMessageStatus);
 
   useEffect(() => {
     if (messageStatus !== 'loading' && messageIds.length) {
       // TODO subscribe to a realtime API
     }
-  }, [messageIds, messageStatus, dispatch]);
+  }, [messageIds, messageStatus]);
 
   return useMessagesById(messageIds);
 }
 
-export function useMessagesByChatId(chatId?: string) {
+export function useMessagesByChatId(chatId?: string, onError?: () => void) {
   const dispatch = useAppDispatch();
   const messageStatus = useAppSelector(selectMessageStatus);
   const lastChatId = useAppSelector(selectLastChatIdForMessages);
-  const navigate = useNavigate();
 
   // Messages are only requested by chat id in the chat view component
   // If we fail to fetch assume an invalid chat was specified and redirect to the base messenger
   useEffect(() => {
     if (messageStatus !== 'loading' && chatId && lastChatId !== chatId) {
-      dispatch(fetchMessagesByChatId(chatId))
-        .unwrap()
-        .catch(() => navigate('/messenger'));
+      dispatch(fetchMessagesByChatId(chatId)).unwrap().catch(onError);
     }
-  }, [chatId, lastChatId, messageStatus, dispatch]);
+  }, [chatId, lastChatId, messageStatus]);
 
   return useAppSelector((state) =>
     chatId ? selectMessagesByChatId(state, chatId) : []
   );
 }
 
-export function useLiveMessagesByChatId(chatId?: string) {
-  const dispatch = useAppDispatch();
+export function useLiveMessagesByChatId(chatId?: string, onError?: () => void) {
+  // const dispatch = useAppDispatch();
   const messageStatus = useAppSelector(selectMessageStatus);
 
   useEffect(() => {
     if (messageStatus !== 'loading' && chatId) {
       // TODO subscribe to a realtime API
     }
-  }, [dispatch, chatId, messageStatus]);
+  }, [chatId, messageStatus]);
 
-  return useMessagesByChatId(chatId);
+  return useMessagesByChatId(chatId, onError);
 }

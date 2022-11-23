@@ -22,20 +22,20 @@ export function useUsersById(userIds: string[]) {
         dispatch(fetchUsersById(missingUserIds));
       }
     }
-  }, [userStatus, userIds, users, dispatch]);
+  }, [userStatus, userIds, users]);
 
   return users;
 }
 
 export function useLiveUsersById(userIds: string[]) {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const userStatus = useAppSelector(selectUserStatus);
 
   useEffect(() => {
     if (userStatus !== 'loading') {
       // TODO subscribe to a realtime API
     }
-  }, [dispatch, userIds, userStatus]);
+  }, [userIds, userStatus]);
 
   return useUsersById(userIds);
 }
