@@ -87,20 +87,16 @@ export const messageSlice = createSlice({
         messageAdapter.setMany(state, action.payload);
       })
       .addCase(fetchMessagesByChatId.fulfilled, (state, action) => {
-        state.lastChatId = action.meta.arg;
-        const idSet = new Set(action.payload.map((m) => m.messageId));
-
-        // Remove any messages from the specified chat
-        // that weren't returned from the new request
-        messageAdapter.setMany(state, action.payload);
+        // Remove all message from the specified chat and
+        // replace them with the data from the new request
         messageAdapter.removeMany(
           state,
           state.ids.filter(
-            (id) =>
-              !idSet.has(id.toString()) &&
-              state.entities[id]?.chatId === action.meta.arg
+            (id) => state.entities[id]?.chatId === action.meta.arg
           )
         );
+        messageAdapter.setMany(state, action.payload);
+        state.lastChatId = action.meta.arg;
       })
       .addCase(sendNewMessage.fulfilled, (state, action) => {
         messageAdapter.addOne(state, action.payload);

@@ -52,20 +52,16 @@ export const chatSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchChatsByUserId.fulfilled, (state, action) => {
-        state.lastUserId = action.meta.arg;
-        const idSet = new Set(action.payload.map((c) => c.chatId));
-
-        // Remove any chats the user was participant in
-        // but weren't returned from the new request
-        chatAdapter.setMany(state, action.payload);
+        // Remove any chats the user was participant and
+        // replace them with the data from the new request
         chatAdapter.removeMany(
           state,
-          state.ids.filter(
-            (id) =>
-              !idSet.has(id.toString()) &&
-              state.entities[id]?.participantIds.includes(action.meta.arg)
+          state.ids.filter((id) =>
+            state.entities[id]?.participantIds.includes(action.meta.arg)
           )
         );
+        chatAdapter.setMany(state, action.payload);
+        state.lastUserId = action.meta.arg;
       })
       .addCase(sendChatUpdate.fulfilled, (state, action) => {
         chatAdapter.updateOne(state, {
