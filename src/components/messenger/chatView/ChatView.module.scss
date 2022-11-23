@@ -3,6 +3,7 @@
 .container {
   display: flex;
   overflow: hidden;
+  min-width: 50rem;
   height: 100%;
   flex-direction: column;
 
